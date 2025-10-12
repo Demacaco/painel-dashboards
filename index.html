@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Dashboards - Demacaco</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #0d1117; /* Cor de fundo escura do GitHub */
+            color: #c9d1d9; /* Cor de texto clara do GitHub */
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #58a6ff; /* Azul dos links do GitHub */
+            font-size: 2.5em;
+            margin-bottom: 40px;
+        }
+        .container-botoes {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Cria duas colunas */
+            gap: 25px; /* Espaço entre os botões */
+            max-width: 800px;
+        }
+        .botao {
+            background-color: #21262d; /* Cor dos botões do GitHub */
+            color: #c9d1d9;
+            padding: 20px 30px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1.1em;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .botao:hover {
+            background-color: #30363d;
+            border-color: #8b949e;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Painel Central de Dashboards</h1>
+
+    <div class="container-botoes">
+        <a href="https://demacaco.github.io/dashboard-produtividade/" target="_blank" class="botao">Dashboard de Produtividade</a>
+        <a href="https://demacaco.github.io/dashboard-atendimento/" target="_blank" class="botao">Dashboard de Atendimento</a>
+        <a href="https://demacaco.github.io/Dashboard-retrabalho/" target="_blank" class="botao">Dashboard de Retrabalho</a>
+        <a href="https://demacaco.github.io/dashboard-guarda/" target="_blank" class="botao">Dashboard de Guarda</a>
+    </div>
+
+</body>
+</html>
