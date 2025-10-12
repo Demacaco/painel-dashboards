@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Dashboards - Demacaco</title>
+    <title>Painel Gestão de Estoque</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -17,17 +17,37 @@
         }
         h1 {
             color: #58a6ff;
-            font-size: 2.2em;
-            margin-bottom: 50px;
+            font-size: 2.5em;
+            margin-bottom: 30px; /* Reduz a margem para aproximar do banner */
             text-align: center;
         }
+
+        /* NOVO: Estilo para o banner de logos */
+        .logo-banner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; /* Permite que os logos quebrem a linha em telas pequenas */
+            gap: 40px; /* Espaço entre os logos */
+            margin-bottom: 60px; /* Espaço entre o banner e os cards */
+            width: 100%;
+            max-width: 1000px;
+            padding: 10px 0;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 30px;
+        }
+        .logo-banner img {
+            max-height: 45px; /* Altura padronizada para os logos */
+            width: auto;
+            object-fit: contain;
+        }
+        
         .container-cards {
             display: grid;
-            /* O grid se ajustará automaticamente */
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
             width: 100%;
-            max-width: 1200px; /* Aumenta a largura máxima */
+            max-width: 1200px;
         }
         .card {
             background-color: #161b22;
@@ -35,7 +55,7 @@
             text-decoration: none;
             border: 1px solid #30363d;
             border-radius: 8px;
-            overflow: hidden; /* Garante que a imagem não saia do card */
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -45,34 +65,38 @@
             transition: transform 0.3s ease, border-color 0.3s ease;
         }
         .card:hover {
-            transform: translateY(-5px); /* Efeito de levantar o card */
+            transform: translateY(-5px);
             border-color: #58a6ff;
         }
         .card img {
-            max-height: 80px; /* Altura máxima para o logo */
+            max-height: 80px;
             max-width: 90%;
-            object-fit: contain; /* Garante que a imagem caiba sem distorcer */
+            object-fit: contain;
+            margin-bottom: 15px; /* Adiciona espaço entre a imagem e o título do card */
         }
         .card h4 {
-            margin-top: 15px;
+            margin: 0;
             font-size: 1.1em;
             font-weight: 600;
         }
 
-        /* Adaptação para telas menores */
         @media (max-width: 600px) {
-            h1 {
-                font-size: 1.8em;
-            }
-            .container-cards {
-                grid-template-columns: 1fr; /* Uma coluna em telas pequenas */
-            }
+            h1 { font-size: 2em; }
+            .logo-banner { gap: 25px; }
         }
     </style>
 </head>
 <body>
 
-    <h1>Painel Central de Dashboards</h1>
+    <h1>Painel Gestão de Estoque</h1>
+
+    <div class="logo-banner">
+        <img src="ICONSUZUKI.JPG" alt="Logo Suzuki">
+        <img src="iconHaojue.JPG" alt="Logo Haojue">
+        <img src="IconKimco.JPG" alt="Logo Kymco">
+        <img src="iconHisun.JPG" alt="Logo Hisun">
+        <img src="iconZontesJPG.JPG" alt="Logo Zontes">
+    </div>
 
     <div class="container-cards">
         <a href="https://demacaco.github.io/dashboard-produtividade/" target="_blank" class="card">
@@ -94,8 +118,7 @@
             <img src="iconZontesJPG.JPG" alt="Logo Zontes">
             <h4>Dashboard de Guarda</h4>
         </a>
-        
-        </div>
+    </div>
 
 </body>
 </html>
