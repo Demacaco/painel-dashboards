@@ -7,42 +7,66 @@
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #0d1117; /* Cor de fundo escura do GitHub */
-            color: #c9d1d9; /* Cor de texto clara do GitHub */
+            background-color: #0d1117;
+            color: #c9d1d9;
             margin: 0;
-            padding: 40px;
+            padding: 40px 20px;
             display: flex;
-            justify-content: center;
-            align-items: center;
             flex-direction: column;
-            min-height: 100vh;
+            align-items: center;
         }
         h1 {
-            color: #58a6ff; /* Azul dos links do GitHub */
-            font-size: 2.5em;
-            margin-bottom: 40px;
-        }
-        .container-botoes {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Cria duas colunas */
-            gap: 25px; /* Espaço entre os botões */
-            max-width: 800px;
-        }
-        .botao {
-            background-color: #21262d; /* Cor dos botões do GitHub */
-            color: #c9d1d9;
-            padding: 20px 30px;
+            color: #58a6ff;
+            font-size: 2.2em;
+            margin-bottom: 50px;
             text-align: center;
-            text-decoration: none;
-            font-size: 1.1em;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
         }
-        .botao:hover {
-            background-color: #30363d;
-            border-color: #8b949e;
+        .container-cards {
+            display: grid;
+            /* O grid se ajustará automaticamente */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px; /* Aumenta a largura máxima */
+        }
+        .card {
+            background-color: #161b22;
+            color: #c9d1d9;
+            text-decoration: none;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            overflow: hidden; /* Garante que a imagem não saia do card */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            height: 180px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px); /* Efeito de levantar o card */
+            border-color: #58a6ff;
+        }
+        .card img {
+            max-height: 80px; /* Altura máxima para o logo */
+            max-width: 90%;
+            object-fit: contain; /* Garante que a imagem caiba sem distorcer */
+        }
+        .card h4 {
+            margin-top: 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        /* Adaptação para telas menores */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            .container-cards {
+                grid-template-columns: 1fr; /* Uma coluna em telas pequenas */
+            }
         }
     </style>
 </head>
@@ -50,12 +74,28 @@
 
     <h1>Painel Central de Dashboards</h1>
 
-    <div class="container-botoes">
-        <a href="https://demacaco.github.io/dashboard-produtividade/" target="_blank" class="botao">Dashboard de Produtividade</a>
-        <a href="https://demacaco.github.io/dashboard-atendimento/" target="_blank" class="botao">Dashboard de Atendimento</a>
-        <a href="https://demacaco.github.io/Dashboard-retrabalho/" target="_blank" class="botao">Dashboard de Retrabalho</a>
-        <a href="https://demacaco.github.io/dashboard-guarda/" target="_blank" class="botao">Dashboard de Guarda</a>
-    </div>
+    <div class="container-cards">
+        <a href="https://demacaco.github.io/dashboard-produtividade/" target="_blank" class="card">
+            <img src="ICONSUZUKI.JPG" alt="Logo Suzuki">
+            <h4>Dashboard de Produtividade</h4>
+        </a>
+
+        <a href="https://demacaco.github.io/dashboard-atendimento/" target="_blank" class="card">
+            <img src="iconHaojue.JPG" alt="Logo Haojue">
+            <h4>Dashboard de Atendimento</h4>
+        </a>
+
+        <a href="https://demacaco.github.io/Dashboard-retrabalho/" target="_blank" class="card">
+            <img src="IconKimco.JPG" alt="Logo Kymco">
+            <h4>Dashboard de Retrabalho</h4>
+        </a>
+
+        <a href="https://demacaco.github.io/dashboard-guarda/" target="_blank" class="card">
+            <img src="iconZontesJPG.JPG" alt="Logo Zontes">
+            <h4>Dashboard de Guarda</h4>
+        </a>
+        
+        </div>
 
 </body>
 </html>
