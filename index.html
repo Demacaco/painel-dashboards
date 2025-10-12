@@ -18,18 +18,16 @@
         h1 {
             color: #58a6ff;
             font-size: 2.5em;
-            margin-bottom: 30px; /* Reduz a margem para aproximar do banner */
+            margin-bottom: 30px;
             text-align: center;
         }
-
-        /* NOVO: Estilo para o banner de logos */
         .logo-banner {
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-wrap: wrap; /* Permite que os logos quebrem a linha em telas pequenas */
-            gap: 40px; /* Espaço entre os logos */
-            margin-bottom: 60px; /* Espaço entre o banner e os cards */
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 60px;
             width: 100%;
             max-width: 1000px;
             padding: 10px 0;
@@ -37,14 +35,14 @@
             padding-bottom: 30px;
         }
         .logo-banner img {
-            max-height: 45px; /* Altura padronizada para os logos */
+            max-height: 45px;
             width: auto;
             object-fit: contain;
         }
-        
         .container-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 30px;
             width: 100%;
             max-width: 1200px;
@@ -61,25 +59,27 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            width: 280px;
             height: 180px;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            transition: all 0.3s ease;
         }
         .card:hover {
             transform: translateY(-5px);
             border-color: #58a6ff;
+            box-shadow: 0 0 20px rgba(88, 166, 255, 0.25);
         }
         .card img {
             max-height: 80px;
             max-width: 90%;
             object-fit: contain;
-            margin-bottom: 15px; /* Adiciona espaço entre a imagem e o título do card */
+            margin-bottom: 15px;
         }
         .card h4 {
             margin: 0;
             font-size: 1.1em;
             font-weight: 600;
+            text-align: center;
         }
-
         @media (max-width: 600px) {
             h1 { font-size: 2em; }
             .logo-banner { gap: 25px; }
