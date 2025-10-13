@@ -14,15 +14,35 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh; /* Garante que o body ocupe a altura total */
+            min-height: 100vh;
+            /* Nova propriedade para a imagem de fundo */
+            background-image: url('https://raw.githubusercontent.com/Dermacaco/palmel-dashboards/main/image.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
         }
+        
+        /* Overlay para melhorar a legibilidade */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(13, 17, 23, 0.85);
+            z-index: -1;
+        }
+        
         h1 {
-            color: #58a6ff; /* Azul para o título principal */
-            font-size: 3em; /* Tamanho maior, como o exemplo "ATENDIMENTO PEDIDOS BOS" */
+            color: #58a6ff;
+            font-size: 3em;
             margin-bottom: 30px;
             text-align: center;
-            letter-spacing: 1px; /* Para simular o estilo bold/condensado */
-            text-transform: uppercase; /* Para simular o estilo em maiúsculas */
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         }
 
         /* AJUSTES: Estilo para o banner de logos */
@@ -38,19 +58,22 @@
             padding: 10px 0;
             border-bottom: 1px solid #30363d;
             padding-bottom: 30px;
+            background-color: rgba(22, 27, 34, 0.7);
+            border-radius: 8px;
+            padding: 20px;
         }
         .logo-banner img {
             max-height: 45px;
             width: auto;
             object-fit: contain;
-            filter: grayscale(80%) opacity(60%); /* Mais fraco e com tons de cinza */
+            filter: grayscale(80%) opacity(60%);
             transition: filter 0.3s ease, box-shadow 0.3s ease;
-            padding: 5px 10px; /* Adiciona padding para a sombra não "cortar" */
-            border-radius: 5px; /* Bordas arredondadas para a sombra */
+            padding: 5px 10px;
+            border-radius: 5px;
         }
         .logo-banner img:hover {
-            filter: grayscale(0%) opacity(100%); /* Cor normal ao passar o mouse */
-            box-shadow: 0 0 15px rgba(88, 166, 255, 0.4); /* Sombra azul nos logos */
+            filter: grayscale(0%) opacity(100%);
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
         }
         
         /* Ajustes para os cards */
@@ -63,7 +86,7 @@
             max-width: 1200px;
         }
         .card {
-            background-color: #161b22;
+            background-color: rgba(22, 27, 34, 0.8);
             color: #c9d1d9;
             text-decoration: none;
             border: 1px solid #30363d;
@@ -77,30 +100,30 @@
             width: 280px;
             height: 180px;
             transition: all 0.3s ease;
-            text-align: center; /* Garante o texto centralizado */
+            text-align: center;
+            backdrop-filter: blur(5px);
         }
         .card:hover {
             transform: translateY(-5px);
             border-color: #58a6ff;
             box-shadow: 0 0 20px rgba(88, 166, 255, 0.25);
+            background-color: rgba(22, 27, 34, 0.95);
         }
-        /* REMOVEMOS A IMAGEM DOS CARDS */
-        /* .card img { ... } */ 
 
         .card h4 {
-            margin: 0; /* Ajusta a margem do título do card */
-            font-size: 1.2em; /* Um pouco maior para preencher */
+            margin: 0;
+            font-size: 1.2em;
             font-weight: 600;
         }
 
-        @media (max-width: 768px) { /* Ajuste para tablets e celulares */
+        @media (max-width: 768px) {
             h1 { font-size: 2.2em; }
             .logo-banner { gap: 20px; }
             .logo-banner img { max-height: 35px; }
             .card { width: 90%; max-width: 300px; height: 150px; }
             .card h4 { font-size: 1em; }
         }
-        @media (max-width: 480px) { /* Ajuste para celulares pequenos */
+        @media (max-width: 480px) {
             h1 { font-size: 1.8em; }
             .logo-banner img { max-height: 30px; }
         }
@@ -116,7 +139,6 @@
         <img src="iconHaojue.JPG" alt="Logo Haojue">
         <img src="IconKimco.JPG" alt="Logo Kymco">
         <img src="iconHisun.JPG" alt="Logo Hisun">
-       
     </div>
 
     <div class="container-cards">
