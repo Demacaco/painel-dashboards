@@ -5,158 +5,318 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Gestão de Estoque</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #0d1117;
-            color: #c9d1d9;
+        * {
             margin: 0;
-            padding: 40px 20px;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+            color: #c9d1d9;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            /* Nova propriedade para a imagem de fundo */
-            background-image: url('https://raw.githubusercontent.com/Dermacaco/palmel-dashboards/main/image.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            padding: 40px 20px;
             position: relative;
+            overflow-x: hidden;
         }
         
-        /* Overlay para melhorar a legibilidade */
+        /* Imagem de fundo do GitHub */
         body::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(13, 17, 23, 0.85);
+            width: 100%;
+            height: 100%;
+            background-image: url('https://raw.githubusercontent.com/Dermacaco/palmel-dashboards/main/image.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15;
             z-index: -1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
         }
         
         h1 {
             color: #58a6ff;
-            font-size: 3em;
-            margin-bottom: 30px;
-            text-align: center;
-            letter-spacing: 1px;
+            font-size: 2.8rem;
+            margin-bottom: 15px;
             text-transform: uppercase;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        /* AJUSTES: Estilo para o banner de logos */
-        .logo-banner {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin-bottom: 60px;
-            width: 100%;
-            max-width: 1000px;
-            padding: 10px 0;
-            border-bottom: 1px solid #30363d;
-            padding-bottom: 30px;
-            background-color: rgba(22, 27, 34, 0.7);
-            border-radius: 8px;
-            padding: 20px;
-        }
-        .logo-banner img {
-            max-height: 45px;
-            width: auto;
-            object-fit: contain;
-            filter: grayscale(80%) opacity(60%);
-            transition: filter 0.3s ease, box-shadow 0.3s ease;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-        .logo-banner img:hover {
-            filter: grayscale(0%) opacity(100%);
-            box-shadow: 0 0 15px rgba(88, 166, 255, 0.4);
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(88, 166, 255, 0.3);
+            position: relative;
+            display: inline-block;
         }
         
-        /* Ajustes para os cards */
-        .container-cards {
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #58a6ff;
+            border-radius: 2px;
+        }
+        
+        .subtitle {
+            color: #8b949e;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .brands-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 50px;
+            width: 100%;
+        }
+        
+        .brands-title {
+            color: #58a6ff;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .brands-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: #58a6ff;
+        }
+        
+        .brands-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 30px;
+            max-width: 900px;
+        }
+        
+        .brand-card {
+            background: rgba(22, 27, 34, 0.7);
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 20px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            min-width: 160px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .brand-card:hover {
+            transform: translateY(-5px);
+            border-color: #58a6ff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .brand-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #f0f6fc;
+        }
+        
+        .dashboard-section {
             width: 100%;
             max-width: 1200px;
         }
-        .card {
-            background-color: rgba(22, 27, 34, 0.8);
-            color: #c9d1d9;
-            text-decoration: none;
+        
+        .dashboard-title {
+            color: #58a6ff;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .dashboard-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: #58a6ff;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            width: 100%;
+        }
+        
+        .dashboard-card {
+            background: rgba(22, 27, 34, 0.7);
             border: 1px solid #30363d;
-            border-radius: 8px;
-            overflow: hidden;
+            border-radius: 10px;
+            padding: 30px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #c9d1d9;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
-            width: 280px;
-            height: 180px;
-            transition: all 0.3s ease;
-            text-align: center;
+            min-height: 150px;
             backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
         }
-        .card:hover {
-            transform: translateY(-5px);
+        
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #58a6ff;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-8px);
             border-color: #58a6ff;
-            box-shadow: 0 0 20px rgba(88, 166, 255, 0.25);
-            background-color: rgba(22, 27, 34, 0.95);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
         }
-
-        .card h4 {
-            margin: 0;
-            font-size: 1.2em;
+        
+        .dashboard-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
             font-weight: 600;
+            margin-bottom: 10px;
+            color: #f0f6fc;
         }
-
+        
+        .card-description {
+            font-size: 0.9rem;
+            color: #8b949e;
+        }
+        
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            color: #8b949e;
+            font-size: 0.9rem;
+            padding: 20px;
+            border-top: 1px solid #30363d;
+            width: 100%;
+            max-width: 800px;
+        }
+        
         @media (max-width: 768px) {
-            h1 { font-size: 2.2em; }
-            .logo-banner { gap: 20px; }
-            .logo-banner img { max-height: 35px; }
-            .card { width: 90%; max-width: 300px; height: 150px; }
-            .card h4 { font-size: 1em; }
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .brands-container {
+                gap: 20px;
+            }
+            
+            .brand-card {
+                min-width: 130px;
+                padding: 15px 20px;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
         }
+        
         @media (max-width: 480px) {
-            h1 { font-size: 1.8em; }
-            .logo-banner img { max-height: 30px; }
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .brand-card {
+                min-width: 110px;
+                padding: 12px 15px;
+            }
+            
+            .brand-name {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <h1>Painel Gestão de Estoque de Peças</h1>
-
-    <div class="logo-banner">
-        <img src="ICONSUZUKI.JPG" alt="Logo Suzuki">
-         <img src="iconZontesJPG.JPG" alt="Logo Zontes">
-        <img src="iconHaojue.JPG" alt="Logo Haojue">
-        <img src="IconKimco.JPG" alt="Logo Kymco">
-        <img src="iconHisun.JPG" alt="Logo Hisun">
+    <div class="header">
+        <h1>Painel Gestão de Estoque de Peças</h1>
+        <p class="subtitle">Sistema integrado de monitoramento e controle de estoque</p>
     </div>
 
-    <div class="container-cards">
-        <a href="https://demacaco.github.io/dashboard-produtividade/" target="_blank" class="card">
-            <h4>Produtividade</h4>
-        </a>
+    <div class="brands-section">
+        <h2 class="brands-title">Marcas Parceiras</h2>
+        <div class="brands-container">
+            <div class="brand-card">
+                <div class="brand-name">SUZUKI</div>
+            </div>
+            <div class="brand-card">
+                <div class="brand-name">Haojue</div>
+            </div>
+            <div class="brand-card">
+                <div class="brand-name">KYMCO</div>
+            </div>
+            <div class="brand-card">
+                <div class="brand-name">HSUN</div>
+            </div>
+        </div>
+    </div>
 
-        <a href="https://demacaco.github.io/dashboard-atendimento/" target="_blank" class="card">
-            <h4>Atendimento de BOs</h4>
-        </a>
+    <div class="dashboard-section">
+        <h2 class="dashboard-title">Módulos do Sistema</h2>
+        <div class="cards-container">
+            <a href="https://demacaco.github.io/dashboard-produtividade/" target="_blank" class="dashboard-card">
+                <div class="card-title">Produtividade</div>
+                <div class="card-description">Monitoramento de indicadores de produtividade</div>
+            </a>
 
-        <a href="https://demacaco.github.io/Dashboard-retrabalho/" target="_blank" class="card">
-            <h4>Retrabalhos</h4>
-        </a>
+            <a href="https://demacaco.github.io/dashboard-atendimento/" target="_blank" class="dashboard-card">
+                <div class="card-title">Atendimento de BOs</div>
+                <div class="card-description">Controle e acompanhamento de boletins de ocorrência</div>
+            </a>
 
-        <a href="https://demacaco.github.io/dashboard-guarda/" target="_blank" class="card">
-            <h4>Filas Recebimento de Peças</h4>
-        </a>
+            <a href="https://demacaco.github.io/Dashboard-retrabalho/" target="_blank" class="dashboard-card">
+                <div class="card-title">Retrabalhos</div>
+                <div class="card-description">Gestão de processos de retrabalho e correções</div>
+            </a>
+
+            <a href="https://demacaco.github.io/dashboard-guarda/" target="_blank" class="dashboard-card">
+                <div class="card-title">Filas Recebimento de Peças</div>
+                <div class="card-description">Controle de filas e processos de recebimento</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Sistema de Gestão de Estoque &copy; 2023 - Desenvolvido para otimização de processos</p>
     </div>
 
 </body>
