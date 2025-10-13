@@ -24,21 +24,21 @@
             overflow-x: hidden;
         }
         
-        /* Imagem de fundo do GitHub */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://raw.githubusercontent.com/Dermacaco/palmel-dashboards/main/image.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.15;
-            z-index: -1;
-        }
+       /* Imagem de fundo do Github */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://raw.githubusercontent.com/Dermacaco/palmel-dashboards/main/image.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.15;
+    z-index: -1; /* Isso é importante também */
+}
         
         .header {
             text-align: center;
@@ -279,7 +279,7 @@
                 <div class="brand-name">SUZUKI</div>
             </div>
             <div class="brand-card">
-                <div class="brand-name">Haojue</div>
+                <div class="brand-name">HAOJUE</div>
             </div>
             <div class="brand-card">
                 <div class="brand-name">KYMCO</div>
