@@ -112,21 +112,74 @@ body::before {
             max-width: 900px;
         }
         
+        /* --- INÍCIO DA ATUALIZAÇÃO CSS --- */
+
+        .brands-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px; /* Espaço menor entre os cartões */
+            max-width: 1000px;
+        }
+
         .brand-card {
-            background: rgba(22, 27, 34, 0.7);
+            background: rgba(22, 27, 34, 0.4); /* Fundo mais transparente e escuro */
             border: 1px solid #30363d;
-            border-radius: 10px;
-            padding: 20px 30px;
+            border-radius: 8px;
+            padding: 10px 15px; /* Padding menor */
             text-align: center;
             transition: all 0.3s ease;
-            min-width: 160px;
+            min-width: 120px; /* Largura mínima menor para caberem na mesma linha */
             backdrop-filter: blur(5px);
+            display: flex; /* Para alinhar itens verticalmente */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* A MÁGICA ACONTECE AQUI */
+        .brand-card img {
+            width: auto;
+            height: 50px; /* Altura FIXA para todos os logos */
+            object-fit: contain; /* Garante que o logo não distorça */
+            margin-bottom: 8px;
+            display: block;
+            /* O truque para "apagar" o fundo branco do JPG no tema escuro */
+            mix-blend-mode: lighten; 
+            /* Se lighten não ficar bom, tente: mix-blend-mode: screen; */
+            
+            /* Deixa os logos levemente acinzentados para não brilharem tanto */
+            filter: grayscale(30%) brightness(0.9); 
+            transition: all 0.3s ease;
+        }
+
+        .brand-card:hover {
+            transform: translateY(-3px);
+            border-color: #58a6ff;
+            background: rgba(22, 27, 34, 0.8); /* Fica um pouco mais claro ao passar o mouse */
         }
         
-        .brand-card:hover {
-            transform: translateY(-5px);
-            border-color: #58a6ff;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        .brand-card:hover img {
+             /* Remove o filtro cinza ao passar o mouse para destacar */
+            filter: grayscale(0%) brightness(1);
+        }
+
+        .brand-name {
+            font-size: 0.9rem; /* Nome da marca menorzinho */
+            font-weight: 600;
+            color: #8b949e; /* Cor mais discreta para o texto */
+        }
+        
+        /* Ajuste para Celulares */
+        @media (max-width: 768px) {
+             .brand-card img {
+                height: 40px; /* Logos menores no celular */
+            }
+             .brand-card {
+                min-width: 100px;
+            }
+        }
+        /* --- FIM DA ATUALIZAÇÃO CSS --- */
         }
         
         .brand-name {
@@ -298,14 +351,6 @@ body::before {
                 <div class="brand-name">KYMCO</div>
             </div>
         </div>
-
-.brand-card img {
-    max-width: 100px; /* Define um tamanho máximo para o logo */
-    height: auto;
-    margin-bottom: 10px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
 }
         </div>
     </div>
