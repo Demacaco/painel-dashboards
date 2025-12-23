@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel Gestão de Estoque</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* --- ESTILO GERAL --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -24,374 +21,170 @@
             overflow-x: hidden;
         }
         
-       /* Imagem de fundo do Github */
-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
- background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_Brazil.svg/2560px-Flag_of_Brazil.svg.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.55;
-    z-index: -1; /* Isso é importante também */
-}
-        
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            width: 100%;
+        /* Fundo Brasil */
+        body::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_Brazil.svg/2560px-Flag_of_Brazil.svg.png');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            opacity: 0.55; z-index: -1;
         }
         
+        .header { text-align: center; margin-bottom: 40px; width: 100%; }
+        
         h1 {
-            color: #58a6ff;
-            font-size: 2.8rem;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            color: #58a6ff; font-size: 2.8rem; margin-bottom: 15px;
+            text-transform: uppercase; letter-spacing: 2px;
             text-shadow: 0 2px 10px rgba(88, 166, 255, 0.3);
-            position: relative;
-            display: inline-block;
+            position: relative; display: inline-block;
         }
         
         h1::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: #58a6ff;
-            border-radius: 2px;
+            content: ''; position: absolute; bottom: -10px; left: 50%;
+            transform: translateX(-50%); width: 100px; height: 3px;
+            background: #58a6ff; border-radius: 2px;
         }
         
-        .subtitle {
-            color: #8b949e;
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
+        .subtitle { color: #8b949e; font-size: 1.2rem; max-width: 600px; margin: 0 auto; line-height: 1.6; }
         
+        /* --- ESTILO DAS MARCAS (CORRIGIDO) --- */
         .brands-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 50px;
-            width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            margin-bottom: 50px; width: 100%;
         }
         
         .brands-title {
-            color: #58a6ff;
-            font-size: 1.5rem;
-            margin-bottom: 25px;
-            text-align: center;
-            position: relative;
+            color: #58a6ff; font-size: 1.5rem; margin-bottom: 25px;
+            text-align: center; position: relative;
         }
         
         .brands-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 2px;
-            background: #58a6ff;
+            content: ''; position: absolute; bottom: -8px; left: 50%;
+            transform: translateX(-50%); width: 60px; height: 2px; background: #58a6ff;
         }
         
         .brands-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            max-width: 900px;
-        }
-        
-        /* --- INÍCIO DA ATUALIZAÇÃO CSS --- */
-
-        /* --- SUBSTITUA ISSO NO SEU CSS --- */
-
-        .brands-container {
-            display: flex;
-            flex-wrap: wrap; /* Mantém wrap para celular, mas no PC vai caber */
-            justify-content: center;
-            gap: 10px; /* Espaço menor entre eles */
-            max-width: 1100px; /* Mais espaço total na tela */
-            width: 100%;
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 10px; max-width: 1100px; width: 100%;
         }
 
         .brand-card {
             background: rgba(22, 27, 34, 0.4); 
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            padding: 10px; /* Menos enchimento interno */
-            text-align: center;
+            border: 1px solid #30363d; border-radius: 8px;
+            padding: 10px; text-align: center;
             transition: all 0.3s ease;
-            min-width: 130px; /* Cartão mais estreito para caberem 5 */
+            min-width: 130px;
             backdrop-filter: blur(5px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
         }
 
-        /* --- FIM DA SUBSTITUIÇÃO --- */
-
-        /* A MÁGICA ACONTECE AQUI */
         .brand-card img {
-            width: auto;
-            height: 50px; /* Altura FIXA para todos os logos */
-            object-fit: contain; /* Garante que o logo não distorça */
-            margin-bottom: 8px;
-            display: block;
-            /* O truque para "apagar" o fundo branco do JPG no tema escuro */
-            mix-blend-mode: lighten; 
-            /* Se lighten não ficar bom, tente: mix-blend-mode: screen; */
-            
-            /* Deixa os logos levemente acinzentados para não brilharem tanto */
+            width: auto; height: 50px; object-fit: contain;
+            margin-bottom: 8px; display: block;
+            mix-blend-mode: lighten; /* Tira o fundo branco */
             filter: grayscale(30%) brightness(0.9); 
             transition: all 0.3s ease;
         }
 
         .brand-card:hover {
-            transform: translateY(-3px);
-            border-color: #58a6ff;
-            background: rgba(22, 27, 34, 0.8); /* Fica um pouco mais claro ao passar o mouse */
+            transform: translateY(-3px); border-color: #58a6ff;
+            background: rgba(22, 27, 34, 0.8);
         }
         
-        .brand-card:hover img {
-             /* Remove o filtro cinza ao passar o mouse para destacar */
-            filter: grayscale(0%) brightness(1);
-        }
-
-        .brand-name {
-            font-size: 0.9rem; /* Nome da marca menorzinho */
-            font-weight: 600;
-            color: #8b949e; /* Cor mais discreta para o texto */
-        }
+        .brand-card:hover img { filter: grayscale(0%) brightness(1); }
+        .brand-name { font-size: 0.9rem; font-weight: 600; color: #8b949e; }
         
-        /* Ajuste para Celulares */
-        @media (max-width: 768px) {
-             .brand-card img {
-                height: 40px; /* Logos menores no celular */
-            }
-             .brand-card {
-                min-width: 100px;
-            }
-        }
-        /* --- FIM DA ATUALIZAÇÃO CSS --- */
-        }
-        
-        .brand-name {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #f0f6fc;
-        }
-        
-        .dashboard-section {
-            width: 100%;
-            max-width: 1200px;
-        }
+        /* --- ESTILO DOS DASHBOARDS --- */
+        .dashboard-section { width: 100%; max-width: 1200px; }
         
         .dashboard-title {
-            color: #58a6ff;
-            font-size: 1.5rem;
-            margin-bottom: 25px;
-            text-align: center;
-            position: relative;
+            color: #58a6ff; font-size: 1.5rem; margin-bottom: 25px;
+            text-align: center; position: relative;
         }
         
         .dashboard-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 2px;
-            background: #58a6ff;
+            content: ''; position: absolute; bottom: -8px; left: 50%;
+            transform: translateX(-50%); width: 60px; height: 2px; background: #58a6ff;
         }
         
         .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            width: 100%;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px; width: 100%;
         }
         
         .dashboard-card {
             background: rgba(22, 27, 34, 0.7);
-            border: 1px solid #30363d;
-            border-radius: 10px;
-            padding: 30px 20px;
-            text-align: center;
-            text-decoration: none;
-            color: #c9d1d9;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 150px;
-            backdrop-filter: blur(5px);
-            position: relative;
-            overflow: hidden;
+            border: 1px solid #30363d; border-radius: 10px;
+            padding: 30px 20px; text-align: center; text-decoration: none;
+            color: #c9d1d9; transition: all 0.3s ease;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 150px; backdrop-filter: blur(5px);
+            position: relative; overflow: hidden;
         }
         
         .dashboard-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: #58a6ff;
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: #58a6ff; transform: scaleX(0); transition: transform 0.3s ease;
         }
         
         .dashboard-card:hover {
-            transform: translateY(-8px);
-            border-color: #58a6ff;
+            transform: translateY(-8px); border-color: #58a6ff;
             box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
         }
         
-        .dashboard-card:hover::before {
-            transform: scaleX(1);
-        }
-        
-        .card-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #f0f6fc;
-        }
-        
-        .card-description {
-            font-size: 0.9rem;
-            color: #8b949e;
-        }
+        .dashboard-card:hover::before { transform: scaleX(1); }
+        .card-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 10px; color: #f0f6fc; }
+        .card-description { font-size: 0.9rem; color: #8b949e; }
         
         .footer {
-            margin-top: 60px;
-            text-align: center;
-            color: #8b949e;
-            font-size: 0.9rem;
-            padding: 20px;
-            border-top: 1px solid #30363d;
-            width: 100%;
-            max-width: 800px;
+            margin-top: 60px; text-align: center; color: #8b949e;
+            font-size: 0.9rem; padding: 20px; border-top: 1px solid #30363d;
+            width: 100%; max-width: 800px;
         }
-        
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .brands-container {
-                gap: 20px;
-            }
-            
-            .brand-card {
-                min-width: 130px;
-                padding: 15px 20px;
-            }
-            
-            .cards-container {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.8rem;
-            }
-            
-            .brand-card {
-                min-width: 110px;
-                padding: 12px 15px;
-            }
-            
-            .brand-name {
-                font-size: 1.1rem;
-            }
-        }
-        /* --- BLOQUEIO DE TELA (CSS) --- */
+
+        /* --- ESTILO TELA DE BLOQUEIO --- */
         #login-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #0d1117; /* Fundo escuro igual ao site */
-            z-index: 10000; /* Garante que fique na frente de tudo */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0d1117; z-index: 10000;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
         }
-
         .login-box {
-            background: #161b22;
-            padding: 40px;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(0,0,0,0.7);
-            max-width: 350px;
-            width: 90%;
+            background: #161b22; padding: 40px;
+            border: 1px solid #30363d; border-radius: 12px;
+            text-align: center; box-shadow: 0 0 50px rgba(0,0,0,0.7);
+            max-width: 350px; width: 90%;
         }
-
         .login-input {
-            width: 100%;
-            padding: 12px;
-            margin: 20px 0;
-            background: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            color: #c9d1d9;
-            font-size: 1rem;
-            text-align: center;
+            width: 100%; padding: 12px; margin: 20px 0;
+            background: #0d1117; border: 1px solid #30363d;
+            border-radius: 6px; color: #c9d1d9; font-size: 1rem; text-align: center;
         }
-
         .login-btn {
-            background: #238636;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: 0.2s;
-            width: 100%;
+            background: #238636; color: white; border: none;
+            padding: 12px 30px; border-radius: 6px; cursor: pointer;
+            font-size: 1rem; font-weight: bold; transition: 0.2s; width: 100%;
         }
-
         .login-btn:hover { background: #2ea043; }
-
-        /* Esconde o site real inicialmente */
+        
+        /* IMPORTANTE: Esconde o site até digitar a senha */
         #site-conteudo { display: none; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            .brand-card img { height: 40px; }
+            .brand-card { min-width: 100px; }
+        }
     </style>
 </head>
 <body>
 
-    <<body>
-   <div id="login-overlay"> ... </div>
-
-   <div id="site-conteudo"> 
-       </div> 
-
-   <script> ... </script>
-</body>
+    <div id="login-overlay">
+        <div class="login-box">
             <h2 style="color: #58a6ff; margin-bottom: 10px;">ACESSO RESTRITO</h2>
             <p style="color: #8b949e; font-size: 0.9rem;">Painel de Gestão de Estoque</p>
-            
             <input type="password" id="passInput" class="login-input" placeholder="Digite a senha de acesso">
-            
             <button onclick="verificarSenha()" class="login-btn">ENTRAR</button>
-            
             <p id="msg-erro" style="color: #f85149; margin-top: 15px; display: none;">Senha incorreta!</p>
         </div>
     </div>
@@ -399,79 +192,98 @@ body::before {
     <div id="site-conteudo">
         
         <div class="header">
-            </div>
+            <h1>Painel Gestão de Estoque de Peças</h1>
+            <p class="subtitle">Sistema integrado de monitoramento e controle de estoque</p>
+        </div>
 
         <div class="brands-section">
+            <h2 class="brands-title">Marcas Parceiras</h2>
+            <div class="brands-container">
+                <div class="brand-card">
+                    <img src="ICONSUZUKI.JPG" alt="Logo Suzuki">
+                    <div class="brand-name">SUZUKI</div>
+                </div>
+                <div class="brand-card">
+                    <img src="iconZontesJPG.JPG" alt="Logo Zontes">
+                    <div class="brand-name">ZONTES</div>
+                </div>
+                <div class="brand-card">
+                    <img src="iconHaojue.JPG" alt="Logo Haojue">
+                    <div class="brand-name">HAOJUE</div>
+                </div>
+                <div class="brand-card">
+                    <img src="iconHisun.JPG" alt="Logo Hisun">
+                    <div class="brand-name">HISUN</div>
+                </div> 
+                <div class="brand-card">
+                    <img src="IconKimco.JPG" alt="Logo Kymco">
+                    <div class="brand-name">KYMCO</div>
+                </div>
             </div>
+        </div>
 
         <div class="dashboard-section">
+            <h2 class="dashboard-title">Módulos do Sistema</h2>
+            <div class="cards-container">
+                <a href="https://demacaco.github.io/dashboard-produtividade/" target="_blank" class="dashboard-card">
+                    <div class="card-title">Produtividade (EM CONSTRUÇÃO)</div>
+                    <div class="card-description">Monitoramento de indicadores de produtividade</div>
+                </a>
+
+                <a href="https://demacaco.github.io/dashboard-atendimento/" target="_blank" class="dashboard-card">
+                    <div class="card-title">Atendimento de BOs</div>
+                    <div class="card-description">Controle e acompanhamento de BOs</div>
+                </a>
+
+                <a href="https://demacaco.github.io/Dashboard-retrabalho/" target="_blank" class="dashboard-card">
+                    <div class="card-title">Retrabalhos</div>
+                    <div class="card-description">Gestão de processos de retrabalho e correções</div>
+                </a>
+
+                <a href="https://demacaco.github.io/dashboard-guarda/" target="_blank" class="dashboard-card">
+                    <div class="card-title">Filas Recebimento de Peças</div>
+                    <div class="card-description">Controle de filas e processos de recebimento</div>
+                </a>
+
+                <a href="https://demacaco.github.io/dashboard.separacao/dashboard.separacao.html" target="_blank" class="dashboard-card">
+                    <div class="card-title">Separação de Peças (EM CONSTRUÇÃO)</div>
+                    <div class="card-description">Monitoramento do processo de separação de pedidos</div>
+                </a>
             </div>
+        </div>
 
         <div class="footer">
-             </div>
+            <p>Sistema de Gestão de Estoque &copy; 2025 - Desenvolvido por ANDRE REZENDE para otimização de processos</p>
+        </div>
 
-    </div> <script>
-       <script>
+    </div>
+
+    <script>
         function verificarSenha() {
             var input = document.getElementById("passInput").value;
-            // Tenta achar o campo de senha com outro ID caso o primeiro falhe
-            if (!input) {
-                 var inputAlternativo = document.getElementById("passwordInput");
-                 if (inputAlternativo) input = inputAlternativo.value;
-            }
-            
-            // --- SUA SENHA AQUI ---
+            // SENHA DEFINIDA
             var senhaCorreta = "demacaco2025"; 
 
             if (input === senhaCorreta) {
-                // 1. Esconde a tela de login
-                var overlay = document.getElementById("login-overlay");
-                if (overlay) overlay.style.display = "none";
-
-                // 2. Tenta achar o conteúdo do site (procura pelos dois nomes possíveis)
-                var conteudo = document.getElementById("site-conteudo");
-                if (!conteudo) {
-                    conteudo = document.getElementById("main-content");
-                }
-
-                // 3. Se achou o conteúdo, mostra ele!
-                if (conteudo) {
-                    conteudo.style.display = "block";
-                    sessionStorage.setItem("auth", "ok"); 
-                } else {
-                    alert("Erro: Não encontrei a div principal do site (site-conteudo ou main-content). Verifique o HTML.");
-                }
-
+                document.getElementById("login-overlay").style.display = "none";
+                document.getElementById("site-conteudo").style.display = "block";
+                sessionStorage.setItem("auth", "ok");
             } else {
-                // Se errou a senha
-                alert("Senha incorreta!");
-                // Tenta limpar o campo de qualquer um dos IDs
-                if(document.getElementById("passInput")) document.getElementById("passInput").value = "";
-                if(document.getElementById("passwordInput")) document.getElementById("passwordInput").value = "";
+                document.getElementById("msg-erro").style.display = "block";
+                document.getElementById("passInput").value = "";
+                document.getElementById("passInput").focus();
             }
         }
 
-        // Verifica se já logou antes
         if (sessionStorage.getItem("auth") === "ok") {
-            var overlay = document.getElementById("login-overlay");
-            if (overlay) overlay.style.display = "none";
-            
-            var conteudo = document.getElementById("site-conteudo");
-            if (!conteudo) conteudo = document.getElementById("main-content");
-            
-            if (conteudo) conteudo.style.display = "block";
+            document.getElementById("login-overlay").style.display = "none";
+            document.getElementById("site-conteudo").style.display = "block";
         }
-        
-        // Permite apertar ENTER
-        var inputPass = document.getElementById("passInput") || document.getElementById("passwordInput");
-        if (inputPass) {
-            inputPass.addEventListener("keypress", function(event) {
-                if (event.key === "Enter") verificarSenha();
-            });
-        }
-    </script>
+
+        document.getElementById("passInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") verificarSenha();
+        });
     </script>
 
-</body>
 </body>
 </html>
