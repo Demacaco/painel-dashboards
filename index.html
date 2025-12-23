@@ -377,8 +377,14 @@ body::before {
 </head>
 <body>
 
-    <div id="login-overlay">
-        <div class="login-box">
+    <<body>
+   <div id="login-overlay"> ... </div>
+
+   <div id="site-conteudo"> 
+       </div> 
+
+   <script> ... </script>
+</body>
             <h2 style="color: #58a6ff; margin-bottom: 10px;">ACESSO RESTRITO</h2>
             <p style="color: #8b949e; font-size: 0.9rem;">Painel de Gestão de Estoque</p>
             
@@ -405,38 +411,65 @@ body::before {
              </div>
 
     </div> <script>
+       <script>
         function verificarSenha() {
             var input = document.getElementById("passInput").value;
+            // Tenta achar o campo de senha com outro ID caso o primeiro falhe
+            if (!input) {
+                 var inputAlternativo = document.getElementById("passwordInput");
+                 if (inputAlternativo) input = inputAlternativo.value;
+            }
             
-            // --- DEFINA SUA SENHA AQUI EMBAIXO ---
-            // Troque 'demacaco2025' pela senha que você quiser
+            // --- SUA SENHA AQUI ---
             var senhaCorreta = "demacaco2025"; 
 
             if (input === senhaCorreta) {
-                // Se acertou:
-                document.getElementById("login-overlay").style.display = "none";
-                document.getElementById("site-conteudo").style.display = "block";
-                sessionStorage.setItem("auth", "ok"); // Salva que já logou
+                // 1. Esconde a tela de login
+                var overlay = document.getElementById("login-overlay");
+                if (overlay) overlay.style.display = "none";
+
+                // 2. Tenta achar o conteúdo do site (procura pelos dois nomes possíveis)
+                var conteudo = document.getElementById("site-conteudo");
+                if (!conteudo) {
+                    conteudo = document.getElementById("main-content");
+                }
+
+                // 3. Se achou o conteúdo, mostra ele!
+                if (conteudo) {
+                    conteudo.style.display = "block";
+                    sessionStorage.setItem("auth", "ok"); 
+                } else {
+                    alert("Erro: Não encontrei a div principal do site (site-conteudo ou main-content). Verifique o HTML.");
+                }
+
             } else {
-                // Se errou:
-                document.getElementById("msg-erro").style.display = "block";
-                document.getElementById("passInput").value = "";
-                document.getElementById("passInput").focus();
+                // Se errou a senha
+                alert("Senha incorreta!");
+                // Tenta limpar o campo de qualquer um dos IDs
+                if(document.getElementById("passInput")) document.getElementById("passInput").value = "";
+                if(document.getElementById("passwordInput")) document.getElementById("passwordInput").value = "";
             }
         }
 
-        // Verifica se já digitou a senha antes (para não pedir ao recarregar a página)
+        // Verifica se já logou antes
         if (sessionStorage.getItem("auth") === "ok") {
-            document.getElementById("login-overlay").style.display = "none";
-            document.getElementById("site-conteudo").style.display = "block";
+            var overlay = document.getElementById("login-overlay");
+            if (overlay) overlay.style.display = "none";
+            
+            var conteudo = document.getElementById("site-conteudo");
+            if (!conteudo) conteudo = document.getElementById("main-content");
+            
+            if (conteudo) conteudo.style.display = "block";
         }
         
-        // Permite apertar ENTER para entrar
-        document.getElementById("passInput").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                verificarSenha();
-            }
-        });
+        // Permite apertar ENTER
+        var inputPass = document.getElementById("passInput") || document.getElementById("passwordInput");
+        if (inputPass) {
+            inputPass.addEventListener("keypress", function(event) {
+                if (event.key === "Enter") verificarSenha();
+            });
+        }
+    </script>
     </script>
 
 </body>
