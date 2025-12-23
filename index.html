@@ -114,28 +114,33 @@ body::before {
         
         /* --- INÍCIO DA ATUALIZAÇÃO CSS --- */
 
+        /* --- SUBSTITUA ISSO NO SEU CSS --- */
+
         .brands-container {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Mantém wrap para celular, mas no PC vai caber */
             justify-content: center;
-            gap: 15px; /* Espaço menor entre os cartões */
-            max-width: 1000px;
+            gap: 10px; /* Espaço menor entre eles */
+            max-width: 1100px; /* Mais espaço total na tela */
+            width: 100%;
         }
 
         .brand-card {
-            background: rgba(22, 27, 34, 0.4); /* Fundo mais transparente e escuro */
+            background: rgba(22, 27, 34, 0.4); 
             border: 1px solid #30363d;
             border-radius: 8px;
-            padding: 10px 15px; /* Padding menor */
+            padding: 10px; /* Menos enchimento interno */
             text-align: center;
             transition: all 0.3s ease;
-            min-width: 120px; /* Largura mínima menor para caberem na mesma linha */
+            min-width: 130px; /* Cartão mais estreito para caberem 5 */
             backdrop-filter: blur(5px);
-            display: flex; /* Para alinhar itens verticalmente */
+            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
+
+        /* --- FIM DA SUBSTITUIÇÃO --- */
 
         /* A MÁGICA ACONTECE AQUI */
         .brand-card img {
@@ -351,7 +356,6 @@ body::before {
                 <div class="brand-name">KYMCO</div>
             </div>
         </div>
-}
         </div>
     </div>
 
