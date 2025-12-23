@@ -321,77 +321,124 @@ body::before {
                 font-size: 1.1rem;
             }
         }
+        /* --- BLOQUEIO DE TELA (CSS) --- */
+        #login-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0d1117; /* Fundo escuro igual ao site */
+            z-index: 10000; /* Garante que fique na frente de tudo */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-box {
+            background: #161b22;
+            padding: 40px;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(0,0,0,0.7);
+            max-width: 350px;
+            width: 90%;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .login-btn {
+            background: #238636;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: 0.2s;
+            width: 100%;
+        }
+
+        .login-btn:hover { background: #2ea043; }
+
+        /* Esconde o site real inicialmente */
+        #site-conteudo { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>Painel Gestão de Estoque de Peças</h1>
-        <p class="subtitle">Sistema integrado de monitoramento e controle de estoque</p>
-    </div>
-
-    <div class="brands-container">
-            <div class="brand-card">
-                <img src="ICONSUZUKI.JPG" alt="Logo Suzuki">
-                <div class="brand-name">SUZUKI</div>
-            </div>
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2 style="color: #58a6ff; margin-bottom: 10px;">ACESSO RESTRITO</h2>
+            <p style="color: #8b949e; font-size: 0.9rem;">Painel de Gestão de Estoque</p>
             
-            <div class="brand-card">
-                <img src="iconZontesJPG.JPG" alt="Logo Zontes">
-                <div class="brand-name">ZONTES</div>
-            </div>
+            <input type="password" id="passInput" class="login-input" placeholder="Digite a senha de acesso">
             
-            <div class="brand-card">
-                <img src="iconHaojue.JPG" alt="Logo Haojue">
-                <div class="brand-name">HAOJUE</div>
-            </div>
+            <button onclick="verificarSenha()" class="login-btn">ENTRAR</button>
             
-            <div class="brand-card">
-                <img src="iconHisun.JPG" alt="Logo Hisun">
-                <div class="brand-name">HISUN</div>
-            </div> 
-            
-            <div class="brand-card">
-                <img src="IconKimco.JPG" alt="Logo Kymco">
-                <div class="brand-name">KYMCO</div>
-            </div>
-        </div>
+            <p id="msg-erro" style="color: #f85149; margin-top: 15px; display: none;">Senha incorreta!</p>
         </div>
     </div>
 
-    <div class="dashboard-section">
-        <h2 class="dashboard-title">Módulos do Sistema</h2>
-        <div class="cards-container">
-            <a href="https://demacaco.github.io/dashboard-produtividade/" target="_blank" class="dashboard-card">
-                <div class="card-title">Produtividade  (EM CONSTRUÇÃO)</div>
-                <div class="card-description">Monitoramento de indicadores de produtividade</div>
-            </a>
-
-            <a href="https://demacaco.github.io/dashboard-atendimento/" target="_blank" class="dashboard-card">
-                <div class="card-title">Atendimento de BOs</div>
-                <div class="card-description">Controle e acompanhamento de BOs</div>
-            </a>
-
-            <a href="https://demacaco.github.io/Dashboard-retrabalho/" target="_blank" class="dashboard-card">
-                <div class="card-title">Retrabalhos</div>
-                <div class="card-description">Gestão de processos de retrabalho e correções</div>
-            </a>
-
-            <a href="https://demacaco.github.io/dashboard-guarda/" target="_blank" class="dashboard-card">
-                <div class="card-title">Filas Recebimento de Peças</div>
-                <div class="card-description">Controle de filas e processos de recebimento</div>
-            </a>
-
-            <a href="https://demacaco.github.io/dashboard.separacao/dashboard.separacao.html" target="_blank" class="dashboard-card">
-                <div class="card-title">Separação de Peças (EM CONSTRUÇÃO)</div>
-                <div class="card-description">Monitoramento do processo de separação de pedidos</div>
-            </a>
+    <div id="site-conteudo">
+        
+        <div class="header">
             </div>
-    </div>
 
-    <div class="footer">
-        <p>Sistema de Gestão de Estoque &copy; 2025 - Desenvolvido por ANDRE REZENDE para otimização de processos</p>
-    </div>
+        <div class="brands-section">
+            </div>
 
+        <div class="dashboard-section">
+            </div>
+
+        <div class="footer">
+             </div>
+
+    </div> <script>
+        function verificarSenha() {
+            var input = document.getElementById("passInput").value;
+            
+            // --- DEFINA SUA SENHA AQUI EMBAIXO ---
+            // Troque 'demacaco2025' pela senha que você quiser
+            var senhaCorreta = "demacaco2025"; 
+
+            if (input === senhaCorreta) {
+                // Se acertou:
+                document.getElementById("login-overlay").style.display = "none";
+                document.getElementById("site-conteudo").style.display = "block";
+                sessionStorage.setItem("auth", "ok"); // Salva que já logou
+            } else {
+                // Se errou:
+                document.getElementById("msg-erro").style.display = "block";
+                document.getElementById("passInput").value = "";
+                document.getElementById("passInput").focus();
+            }
+        }
+
+        // Verifica se já digitou a senha antes (para não pedir ao recarregar a página)
+        if (sessionStorage.getItem("auth") === "ok") {
+            document.getElementById("login-overlay").style.display = "none";
+            document.getElementById("site-conteudo").style.display = "block";
+        }
+        
+        // Permite apertar ENTER para entrar
+        document.getElementById("passInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                verificarSenha();
+            }
+        });
+    </script>
+
+</body>
 </body>
 </html>
