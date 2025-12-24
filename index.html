@@ -245,15 +245,23 @@
                     <div class="card-description">Controle de filas e processos de recebimento</div>
                 </a>
 
-                <a href="https://demacaco.github.io/dashboard.separacao/dashboard.separacao.html" target="_blank" class="dashboard-card">
-                    <div class="card-title">Separação de Peças (EM CONSTRUÇÃO)</div>
-                    <div class="card-description">Monitoramento do processo de separação de pedidos</div>
-                    <a href="https://github.com/Demacaco/inventario.html"> 
-                   <a href="inventario.html" class="dashboard-card">
-                    <div class="card-title">Inventário Cíclico</div>
-                   <div class="card-description">Monitoramento e Controle (Google Apps)</div>
-</a>
-                </a>
+                <a href="https://demacaco.github.io/dashboard-separacao/dashboard.separacao.html" target="_blank" class="dashboard-card">
+        <div class="card-title">Separação de Peças (EM CONSTRUÇÃO)</div>
+        <div class="card-description">Monitoramento do processo de separação de pedidos</div>
+    </a>
+
+    <a href="inventario.html" class="dashboard-card">
+        <div class="card-title">Inventário Cíclico</div>
+        <div class="card-description">Monitoramento e Controle (Google Apps)</div>
+    </a>
+
+</div> ```
+
+**O que estava errado:**
+1.  Na linha 251 da sua imagem, tinha um link `<a href="https://github.com/Demacaco/inventario.html">` perdido ali no meio. Isso leva para o código fonte, não para o site, gerando erro.
+2.  O `</a>` (fechamento) do botão de Separação só aparecia lá na linha 256, engolindo o botão de Inventário junto.
+
+Com o código acima, os botões ficam independentes, o visual vai alinhar e o link `inventario.html` vai funcionar corretamente (desde que o arquivo `inventario.html` esteja na mesma pasta do `index.html` no GitHub).
             </div>
         </div>
 
