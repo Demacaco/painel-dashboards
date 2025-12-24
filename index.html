@@ -293,12 +293,15 @@
     </div>
 
     <script>
+        <script>
         function verificarSenha() {
             var input = document.getElementById("passInput").value;
-            // SENHA DEFINIDA
-            var senhaCorreta = "demacaco2025"; 
+            
+            // --- NOVA SENHA AQUI ---
+            var senhaCorreta = "suzuki26"; 
 
-            if (input === senhaCorreta) {
+            // O .toLowerCase() faz aceitar "Suzuki26" ou "SUZUKI26" também
+            if (input.toLowerCase().trim() === senhaCorreta.toLowerCase()) {
                 document.getElementById("login-overlay").style.display = "none";
                 document.getElementById("site-conteudo").style.display = "block";
                 sessionStorage.setItem("auth", "ok");
@@ -309,14 +312,17 @@
             }
         }
 
+        // Mantém logado se der F5
         if (sessionStorage.getItem("auth") === "ok") {
             document.getElementById("login-overlay").style.display = "none";
             document.getElementById("site-conteudo").style.display = "block";
         }
 
+        // Permite apertar ENTER para entrar
         document.getElementById("passInput").addEventListener("keypress", function(event) {
             if (event.key === "Enter") verificarSenha();
         });
+    </script>
     </script>
 
 </body>
