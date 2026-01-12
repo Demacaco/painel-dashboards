@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Inventário</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        :root { --bg: #0f0f0f; --card: #1e1e1e; --input: #2d2d2d; --text: #e0e0e0; --accent: #4ca1af; --danger: #e74c3c; --success: #27ae60; --warning: #f39c12; --border: #333; }
+        
+        body { background-color: var(--bg); color: var(--text); padding: 10px; min-height: 100vh; font-size: 14px; }
+        .container { max-width: 800px; margin: 0 auto; padding-bottom: 80px; }
+        
+        /* Header */
+        header { 
+            text-align: center; margin-bottom: 15px; padding: 10px; 
+            background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%); 
+            border-radius: 8px; border: 1px solid #333; 
+        }
+        h1 { font-size: 1.2rem; margin: 0; }
+
+        /* Abas */
+        .tabs { display: flex; margin-bottom: 15px; gap: 5px; background: var(--card); padding: 5px; border-radius: 8px; }
+        .tab-btn { flex: 1; padding: 10px; background: transparent; border: none; color: #888; cursor: pointer; border-radius: 6px; font-weight: bold; transition: all 0.3s ease; }
+        .tab-btn.active { background: var(--accent); color: #fff; }
+        .content { display: none; }
+        .content.active { display: block; }
+
+        /* INPUTS */
+        label { display: block; font-size: 11px; color: #aaa; margin-bottom: 2px; margin-top: 8px; }
+        input, select { 
+            width: 100%; padding: 12px; background: var(--input); 
+            border: 1px solid var(--border); color: var(--text); border-radius: 6px; 
+            font-size: 16px; 
+        }
+        select option { background: #1e1e1e; color: #fff; }
+
+        /* --- CARDS VERTICAIS --- */
+        .registro-container { margin-top: 10px; }
+        
+        .mobile-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--accent);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .card-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        /* Aviso de Erro (Texto Vermelho) */
+        .div-warning-text {
+            display: none; /* Escondido por padrão */
+            background: #e74c3c; color: white; 
+            text-align: center; padding: 5px; 
+            border-radius: 4px; margin: 10px 0; 
+            font-weight: bold; font-size: 12px;
+        }
+
+        /* Área de Detalhes (Sempre Visível agora) */
+        .card-details-area {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #333;
+        }
+        
+        .btn-del-card {
+            background: var(--danger); color: white; border: none;
+            width: 100%; padding: 10px; border-radius: 6px; margin-top: 15px;
+            font-weight: bold; opacity: 0.8;
+        }
+
+        /* Botões Flutuantes */
+        .btn-float-add { 
+            position: fixed; bottom: 80px; right: 20px; width: 60px; height: 60px; 
+            border-radius: 50%; background: #0044cc; color: white; font-size: 30px; 
+            border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.5); z-index: 99;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+        .btn-save-fixed {
+            position: fixed; bottom: 10px; left: 10px; right: 10px; 
+            background: #27ae60; color: white; padding: 15px; border-radius: 8px; 
+            border: none; font-weight: bold; font-size: 16px; 
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.5); z-index: 100; cursor: pointer;
+        }
+
+        /* Metrics Grid */
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .metric-card { background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%); padding: 15px; border-radius: 8px; border: 1px solid #333; text-align: center; }
+        .metric-card.progresso { grid-column: span 2; }
+        .metric-value { font-size: 2rem; font-weight: 700; display: block; margin: 5px 0; }
+        
+        .chart-container { background: var(--card); padding: 10px; border-radius: 8px; border: 1px solid var(--border); height: 250px; margin-bottom: 15px; }
+
+        #loading { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 15, 15, 0.95); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header><h1>INVENTÁRIO CÍCLICO</h1></header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="aba('registro')">REGISTRO</button>
+            <button class="tab-btn" onclick="aba('metricas'); carregarMetricas()">MÉTRICAS</button>
+        </div>
+        
+        <div id="registro" class="content active">
+            <div style="background:var(--card); padding:10px; border-radius:8px; border:1px solid #333; margin-bottom:15px;">
+                <div class="card-row">
+                    <div><label>Data</label><input type="date" id="data-contagem"></div>
+                    <div><label>Área</label><select id="area"><option>JTA CORREDOR A</option><option>JTA CORREDOR B</option></select></div>
+                </div>
+                <div class="card-row">
+                    <div>
+                        <label>Resp.</label>
+                        <select id="resp">
+                            <option>André</option>
+                            <option>Petrucia</option>
+                            <option>Kaique</option> 
+                        </select>
+                    </div>
+                    <div><label>Senha</label><input type="password" id="senha" placeholder="***"></div>
+                </div>
+            </div>
+
+            <div id="lista-cards" class="registro-container"></div>
+
+            <button class="btn-float-add" onclick="addCard()">+</button>
+            <button class="btn-save-fixed" onclick="salvar()">💾 SALVAR NO SHEETS</button>
+        </div>
+
+        <div id="metricas" class="content">
+            <div class="dashboard-grid">
+                <div class="metric-card" style="border-left:4px solid #27ae60">
+                    <span style="color:#aaa; font-size:0.8rem">ISA</span>
+                    <span class="metric-value" style="color:#27ae60" id="kpi-isa">--%</span>
+                </div>
+                <div class="metric-card" style="border-left:4px solid #e74c3c">
+                    <span style="color:#aaa; font-size:0.8rem">ERROS</span>
+                    <span class="metric-value" style="color:#e74c3c" id="kpi-div">--</span>
+                </div>
+                <div class="metric-card progresso" style="border-left:4px solid #f39c12">
+                    <span style="color:#aaa; font-size:0.8rem">PROGRESSO</span>
+                    <span class="metric-value" style="color:#f39c12" id="kpi-cont">--</span>
+                    <div style="background:#333; height:8px; border-radius:4px; margin-top:5px; overflow:hidden;">
+                        <div id="bar-prog" style="width:0%; background:#f39c12; height:100%;"></div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.7rem; color:#888; margin-top:2px;">
+                        <span id="txt-cont">0</span><span id="txt-total">0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-container"><canvas id="graficoIsa"></canvas></div>
+            
+            <div style="background:var(--card); padding:10px; border-radius:8px;">
+                <h4 style="color:#aaa; border-bottom:1px solid #333; margin-bottom:10px; font-size:1rem">Detalhamento</h4>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; text-align:center;">
+                    <div style="background:#2d2d2d; padding:8px; border-radius:5px;">
+                        <span style="color:#e74c3c; font-weight:bold" id="m-erro">0</span><br>
+                        <span style="font-size:0.7rem">Empenho</span>
+                    </div>
+                    <div style="background:#2d2d2d; padding:8px; border-radius:5px;"><span style="color:#f39c12; font-weight:bold" id="m-transf">0</span><br><span style="font-size:0.7rem">Transf.</span></div>
+                    <div style="background:#2d2d2d; padding:8px; border-radius:5px;"><span style="color:#f39c12; font-weight:bold" id="m-fora">0</span><br><span style="font-size:0.7rem">Fora End.</span></div>
+                    <div style="background:#2d2d2d; padding:8px; border-radius:5px;"><span style="color:#aaa; font-weight:bold" id="m-semcod">0</span><br><span style="font-size:0.7rem">Sem Cód.</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="loading">⏳<br>Salvando...</div>
+
+    <script>
+        function aba(id) { document.querySelectorAll('.content').forEach(c => c.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); event.target.classList.add('active'); }
+
+        // --- GERAÇÃO DO CARD VERTICAL ---
+        function getCardHTML() {
+            return `
+            <div class="mobile-card">
+                <div class="card-row">
+                    <div style="flex:2"><label>Endereço</label><input type="text" class="inp-end" placeholder="Ex: A-01-02"></div>
+                </div>
+                <div><label>Código</label><input type="text" class="inp-cod" placeholder="Bipe aqui..."></div>
+                
+                <div class="card-row">
+                    <div><label>Qtd Sis</label><input type="number" class="inp-sys" placeholder="0"></div>
+                    <div><label>Qtd Cont</label><input type="number" class="inp-cont" placeholder="0" onblur="checkDiv(this)"></div>
+                </div>
+
+                <div class="div-warning-text">⚠️ DIVERGÊNCIA IDENTIFICADA</div>
+
+                <div class="card-details-area">
+                    <label>Motivo / Classificação</label>
+                    <select class="sel-motivo">
+                        <option value="">- Selecione -</option>
+                        <option value="Empenho">Empenho</option> <option value="Transferencia">Transferência</option>
+                        <option value="Fora Endereco">Fora Endereço</option>
+                        <option value="Sem Codigo">Sem Código</option>
+                        <option value="Contagem Errada">Erro Contagem</option>
+                    </select>
+                    
+                    <div class="card-row">
+                        <div><label>Ajuste?</label><select class="sel-ajuste"><option value="">-</option><option value="S">Sim</option></select></div>
+                        <div><label>Causa/Obs</label><input type="text" class="inp-causa"></div>
+                    </div>
+                </div>
+                
+                <select class="sel-div" style="display:none"><option value="N">Não</option><option value="S">Sim</option></select>
+
+                <button class="btn-del-card" onclick="this.closest('.mobile-card').remove()">EXCLUIR ITEM</button>
+            </div>`;
+        }
+
+        function addCard() {
+            document.getElementById('lista-cards').insertAdjacentHTML('beforeend', getCardHTML());
+            const cards = document.querySelectorAll('.mobile-card');
+            if(cards.length > 0) cards[cards.length-1].querySelector('.inp-end').focus();
+        }
+
+        function checkDiv(input) {
+            const card = input.closest('.mobile-card');
+            const sys = card.querySelector('.inp-sys').value;
+            const cont = input.value;
+            const warningText = card.querySelector('.div-warning-text');
+            const selDiv = card.querySelector('.sel-div');
+            
+            // Lógica: Se sistema e contagem forem preenchidos e diferentes
+            if(sys && cont && sys != cont) {
+                selDiv.value = "S";
+                warningText.style.display = "block"; // Mostra SÓ o aviso vermelho
+                card.style.borderLeft = "5px solid #e74c3c"; // Borda Vermelha
+            } else {
+                selDiv.value = "N";
+                warningText.style.display = "none"; // Esconde o aviso
+                card.style.borderLeft = "5px solid #27ae60"; // Borda Verde
+            }
+        }
+
+        function salvar() {
+            document.getElementById('loading').style.display = 'flex';
+            const rows = [];
+            document.querySelectorAll('.mobile-card').forEach(card => {
+                const cod = card.querySelector('.inp-cod').value;
+                if(cod) { 
+                    rows.push({
+                        endereco: card.querySelector('.inp-end').value,
+                        codigo: cod,
+                        qtdSistema: card.querySelector('.inp-sys').value,
+                        qtdContada: card.querySelector('.inp-cont').value,
+                        divergencia: card.querySelector('.sel-div').value,
+                        motivo: card.querySelector('.sel-motivo').value,
+                        ajuste: card.querySelector('.sel-ajuste').value,
+                        causa: card.querySelector('.inp-causa').value
+                    });
+                }
+            });
+
+            if(rows.length === 0) { alert("Nada preenchido!"); document.getElementById('loading').style.display = 'none'; return; }
+
+            const dados = {
+                dataContagem: document.getElementById('data-contagem').value,
+                areaContada: document.getElementById('area').value,
+                responsavel: document.getElementById('resp').value,
+                rows: rows
+            };
+
+            google.script.run.withSuccessHandler(res => {
+                document.getElementById('loading').style.display = 'none';
+                if(res.success) {
+                    alert("✅ Salvo!");
+                    document.getElementById('lista-cards').innerHTML = ''; 
+                    addCard();
+                    carregarMetricas();
+                } else { alert("Erro: " + res.message); }
+            }).saveDataToSheet(dados);
+        }
+
+        let meuGrafico = null;
+        function renderChart(datas, valores) {
+            const ctx = document.getElementById('graficoIsa');
+            if(!ctx) return;
+            if(meuGrafico) meuGrafico.destroy();
+            const labels = datas || [];
+            const data = valores || [];
+            meuGrafico = new Chart(ctx, {
+                type: 'line',
+                data: { labels: labels, datasets: [{ label: 'ISA %', data: data, borderColor: '#4ca1af', backgroundColor: 'rgba(76, 161, 175, 0.1)', tension: 0.4, fill: true, pointRadius: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min: 50, max: 100, grid: { color: '#333' } }, x: { grid: { display: false } } } }
+            });
+        }
+
+        function carregarMetricas() {
+            google.script.run.withSuccessHandler(d => {
+                if(d.success) {
+                    document.getElementById('kpi-isa').textContent = d.isa;
+                    document.getElementById('kpi-div').textContent = d.div;
+                    document.getElementById('kpi-cont').textContent = d.contadas;
+                    document.getElementById('txt-cont').textContent = d.contadas;
+                    document.getElementById('txt-total').textContent = d.total;
+                    document.getElementById('bar-prog').style.width = d.pct + '%';
+                    document.getElementById('m-erro').textContent = d.m_erro;
+                    document.getElementById('m-transf').textContent = d.m_transf;
+                    document.getElementById('m-fora').textContent = d.m_fora;
+                    document.getElementById('m-semcod').textContent = d.m_semcod;
+                    renderChart(d.hist_datas, d.hist_valores);
+                }
+            }).getKpiMetrics();
+        }
+
+        window.onload = function() {
+            document.getElementById('data-contagem').valueAsDate = new Date();
+            addCard();
+            carregarMetricas();
+        };
+    </script>
+    <div style="text-align:center; padding:10px; color:#555; font-size:12px; margin-top:30px; border-top:1px solid #333;">
+        ANDRE REZENDE - Sistema de Inventário Cíclico © <span id="ano-atual"></span><br>
+        Última atualização: <span id="data-hora-atual"></span>
+    </div>
+
+    <script>
+        // Script simples para pegar data/hora atual
+        document.getElementById('ano-atual').textContent = new Date().getFullYear();
+        
+        const agora = new Date();
+        const formato = agora.toLocaleDateString('pt-BR') + ', ' + agora.toLocaleTimeString('pt-BR');
+        document.getElementById('data-hora-atual').textContent = formato;
+    </script>
+</body>
+</html>
