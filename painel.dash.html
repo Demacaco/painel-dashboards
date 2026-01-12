@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Gestão de Estoque</title>
+    <style>
+        /* --- ESTILO GERAL --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+            color: #c9d1d9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Fundo com leve textura */
+        body::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_Brazil.svg/2560px-Flag_of_Brazil.svg.png');
+            background-size: cover; background-position: center; background-repeat: no-repeat;
+            opacity: 0.03; /* Bem suave */
+            z-index: -1;
+        }
+        
+        .header { text-align: center; margin-bottom: 40px; width: 100%; }
+        
+        h1 {
+            color: #58a6ff; font-size: 2.8rem; margin-bottom: 15px;
+            text-transform: uppercase; letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(88, 166, 255, 0.3);
+            position: relative; display: inline-block;
+        }
+        
+        h1::after {
+            content: ''; position: absolute; bottom: -10px; left: 50%;
+            transform: translateX(-50%); width: 100px; height: 3px;
+            background: #58a6ff; border-radius: 2px;
+        }
+        
+        .subtitle { color: #8b949e; font-size: 1.2rem; max-width: 600px; margin: 0 auto; line-height: 1.6; }
+        
+        /* --- MARCAS --- */
+        .brands-section {
+            display: flex; flex-direction: column; align-items: center;
+            margin-bottom: 50px; width: 100%;
+        }
+        
+        .brands-title {
+            color: #58a6ff; font-size: 1.5rem; margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .brands-container {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 15px; max-width: 1100px; width: 100%;
+        }
+
+        .brand-card {
+            background: rgba(22, 27, 34, 0.4); 
+            border: 1px solid #30363d; border-radius: 8px;
+            padding: 10px; text-align: center;
+            min-width: 130px;
+            backdrop-filter: blur(5px);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .brand-card img {
+            height: 50px; object-fit: contain; margin-bottom: 8px;
+            mix-blend-mode: lighten; filter: grayscale(30%) brightness(0.9); 
+            transition: all 0.3s ease;
+        }
+
+        .brand-card:hover {
+            transform: translateY(-3px); border-color: #58a6ff;
+            background: rgba(22, 27, 34, 0.8);
+        }
+        .brand-card:hover img { filter: grayscale(0%) brightness(1); }
+        .brand-name { font-size: 0.9rem; font-weight: 600; color: #8b949e; }
+        
+        /* --- DASHBOARDS --- */
+        .dashboard-section { width: 100%; max-width: 1200px; }
+        
+        .dashboard-title {
+            color: #58a6ff; font-size: 1.5rem; margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .cards-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px; width: 100%;
+        }
+        
+        .dashboard-card {
+            background: rgba(22, 27, 34, 0.7);
+            border: 1px solid #30363d; border-radius: 10px;
+            padding: 30px 20px; text-align: center; text-decoration: none;
+            color: #c9d1d9; transition: all 0.3s ease;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 150px; backdrop-filter: blur(5px);
+            position: relative; overflow: hidden;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px); border-color: #58a6ff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 10px; color: #f0f6fc; }
+        .card-description { font-size: 0.9rem; color: #8b949e; }
+
+        /* --- MÓDULOS EM CONSTRUÇÃO --- */
+        .card-construcao {
+            background: linear-gradient(135deg, #3d0a0a 0%, #1a1a1a 100%) !important;
+            border: 1px solid #5c1818 !important;
+            opacity: 0.85; position: relative;
+        }
+        .card-construcao:hover {
+            background: linear-gradient(135deg, #570e0e 0%, #252525 100%) !important;
+            border-color: #ff4d4d !important;
+            opacity: 1; cursor: not-allowed;
+        }
+        .card-construcao .card-title { color: #ff8080 !important; }
+        .card-construcao::after {
+            content: "🔒 EM BREVE";
+            position: absolute; top: 10px; right: 10px;
+            font-size: 10px; background-color: #2e0505;
+            color: #ff8080; padding: 2px 6px;
+            border-radius: 4px; border: 1px solid #5c1818;
+        }
+        
+        .footer {
+            margin-top: 60px; text-align: center; color: #8b949e;
+            font-size: 0.9rem; padding: 20px; border-top: 1px solid #30363d;
+            width: 100%;
+        }
+
+        /* --- TELA DE LOGIN --- */
+        #login-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0d1117; z-index: 10000;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+        }
+        .login-box {
+            background: #161b22; padding: 40px;
+            border: 1px solid #30363d; border-radius: 12px;
+            text-align: center; box-shadow: 0 0 50px rgba(0,0,0,0.7);
+            max-width: 350px; width: 90%;
+        }
+        .login-input {
+            width: 100%; padding: 12px; margin: 20px 0;
+            background: #0d1117; border: 1px solid #30363d;
+            border-radius: 6px; color: #c9d1d9; font-size: 1rem; text-align: center;
+        }
+        .login-btn {
+            background: #238636; color: white; border: none;
+            padding: 12px 30px; border-radius: 6px; cursor: pointer;
+            font-size: 1rem; font-weight: bold; width: 100%;
+        }
+        .login-btn:hover { background: #2ea043; }
+        #site-conteudo { display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2 style="color: #58a6ff; margin-bottom: 10px;">ACESSO RESTRITO</h2>
+            <p style="color: #8b949e; font-size: 0.9rem;">Painel de Gestão de Estoque</p>
+            <input type="password" id="passInput" class="login-input" placeholder="Digite a senha">
+            <button onclick="verificarSenha()" class="login-btn">ENTRAR</button>
+            <p id="msg-erro" style="color: #f85149; margin-top: 15px; display: none;">Senha incorreta!</p>
+        </div>
+    </div>
+
+    <div id="site-conteudo">
+        
+        <div class="header">
+            <h1>Painel Gestão de Estoque de Peças</h1>
+            <p class="subtitle">Sistema integrado de monitoramento e controle de estoque</p>
+        </div>
+
+        <div class="brands-section">
+            <h2 class="brands-title">Marcas Parceiras</h2>
+            <div class="brands-container">
+                <div class="brand-card"><img src="ICONSUZUKI.JPG"><div class="brand-name">SUZUKI</div></div>
+                <div class="brand-card"><img src="iconZontesJPG.JPG"><div class="brand-name">ZONTES</div></div>
+                <div class="brand-card"><img src="iconHaojue.JPG"><div class="brand-name">HAOJUE</div></div>
+                <div class="brand-card"><img src="iconHisun.JPG"><div class="brand-name">HISUN</div></div>
+                <div class="brand-card"><img src="IconKimco.JPG"><div class="brand-name">KYMCO</div></div>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <h2 class="dashboard-title">Módulos do Sistema</h2>
+            <div class="cards-container">
+                
+                <a href="#" class="dashboard-card card-construcao">
+                    <div class="card-title">Produtividade</div>
+                    <div class="card-description">Monitoramento de indicadores</div>
+                </a>
+
+                <a href="https://demacaco.github.io/dashboard-atendimento/" target="_blank" class="dashboard-card">
+                    <div class="card-title">Atendimento de BOs</div>
+                    <div class="card-description">Controle de BOs</div>
+                </a>
+
+                <a href="https://demacaco.github.io/Dashboard-retrabalho/" target="_blank" class="dashboard-card">
+                    <div class="card-title">Retrabalhos</div>
+                    <div class="card-description">Gestão de correções</div>
+                </a>
+
+                <a href="https://demacaco.github.io/dashboard-guarda/" target="_blank" class="dashboard-card">
+                    <div class="card-title">Filas Recebimento</div>
+                    <div class="card-description">Controle de filas</div>
+                </a>
+
+                <a href="#" class="dashboard-card card-construcao">
+                    <div class="card-title">Separação de Peças</div>
+                    <div class="card-description">Processo de separação</div>
+                </a>
+
+                <a href="https://script.google.com/macros/s/AKfycbwMgpfdouazqOuQvwB29DArE_ojF7ebcdcoxoOhRRqXxRCh-YWi0C3mfKWOpGtEp0Yk/exec" target="_blank" class="dashboard-card">
+    <div class="card-title" style="color: #00DAC0;">Inventário Cíclico</div>
+    <div class="card-description">Monitoramento e Controle (Google Apps)</div>
+</a>
+
+            </div>
+        </div> 
+
+        <div class="footer">
+            <p>&copy; 2025 - Desenvolvido por ANDRE REZENDE</p>
+        </div>
+
+    </div>
+
+    <script>
+        function verificarSenha() {
+            var input = document.getElementById("passInput").value;
+            // SENHA DEFINIDA
+            var senhaCorreta = "suzuki26"; 
+
+            // toLowerCase permite entrar se digitar "SUZUKI26" ou "Suzuki26"
+            if (input.toLowerCase().trim() === senhaCorreta.toLowerCase()) {
+                document.getElementById("login-overlay").style.display = "none";
+                document.getElementById("site-conteudo").style.display = "block";
+                sessionStorage.setItem("auth", "ok");
+            } else {
+                document.getElementById("msg-erro").style.display = "block";
+                document.getElementById("passInput").value = "";
+                document.getElementById("passInput").focus();
+            }
+        }
+
+        if (sessionStorage.getItem("auth") === "ok") {
+            document.getElementById("login-overlay").style.display = "none";
+            document.getElementById("site-conteudo").style.display = "block";
+        }
+
+        document.getElementById("passInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") verificarSenha();
+        });
+    </script>
+
+</body>
+</html>
