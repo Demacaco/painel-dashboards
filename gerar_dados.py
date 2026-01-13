@@ -1,82 +1,129 @@
 import pandas as pd
-import json
-import glob
+import os
+from datetime import datetime
 
-def carregar_dados():
-    # Tenta ler os arquivos. Ajuste o nome se necessário.
-    try:
-        # Se você estiver usando os CSVs exportados:
-        df_notas = pd.read_csv('Relatorio_NFe.xlsx - Lista_Notas.csv')
-        df_itens = pd.read_csv('Relatorio_NFe.xlsx - Itens_Detalhados.csv')
-        
-        # Se for ler direto do Excel (precisa instalar openpyxl: pip install openpyxl)
-        # df_notas = pd.read_excel('Relatorio_NFe.xlsx', sheet_name='Lista_Notas')
-        # df_itens = pd.read_excel('Relatorio_NFe.xlsx', sheet_name='Itens_Detalhados')
-    except FileNotFoundError:
-        print("Erro: Arquivos de dados não encontrados.")
-        return None
+# Configuração dos arquivos
+ARQUIVO_DADOS = 'Relatorio_NFe.xlsx'
+ARQUIVO_SAIDA = 'painel.dash.html'
 
-    return df_notas, df_itens
+print("--- INICIANDO GERADOR DE DASHBOARD ---")
 
-def gerar_json_fechamento():
-    dados = carregar_dados()
-    if not dados: return
+# 1. Verificação do Arquivo
+if not os.path.exists(ARQUIVO_DADOS):
+    print(f"ERRO CRÍTICO: O arquivo '{ARQUIVO_DADOS}' não foi encontrado na pasta.")
+    print("Confira se o nome está exato (letras maiúsculas/minúsculas importam).")
+    input("Pressione ENTER para sair...")
+    exit()
 
-    df_notas, df_itens = dados
+print(f"1. Arquivo '{ARQUIVO_DADOS}' encontrado! Carregando dados...")
 
-    # --- Tratamento de Dados ---
-    # Converter valor para numérico (caso venha como string com virgula)
-    # df_notas['Valor_Total'] = df_notas['Valor_Total'].astype(str).str.replace(',', '.').astype(float)
+try:
+    # 2. Carregar Dados (Tenta ler Excel)
+    df = pd.read_excel(ARQUIVO_DADOS)
+    print(f"2. Dados carregados com sucesso! Total de linhas: {len(df)}")
     
-    # Converter Data
-    if 'Data' in df_notas.columns:
-        df_notas['Data'] = pd.to_datetime(df_notas['Data'])
-    elif 'Data Emissao' in df_notas.columns:
-         df_notas['Data'] = pd.to_datetime(df_notas['Data Emissao'])
-
-    # --- 1. KPIs ---
-    faturamento = df_notas['Valor_Total'].sum()
-    qtd_notas = df_notas['Chave'].nunique() if 'Chave' in df_notas.columns else len(df_notas)
-    qtd_pecas = df_itens['Quantidade'].sum()
-    ticket_medio = faturamento / qtd_notas if qtd_notas > 0 else 0
-
-    # --- 2. Gráfico Mensal (Janeiro a Dezembro) ---
-    # Cria um array de 12 posições zeradas
-    vendas_mes = [0] * 12
+    # 3. Processamento Básico (KPIs)
+    # Tenta adivinhar colunas comuns se não achar as exatas
+    cols = [c.lower() for c in df.columns]
     
-    # Agrupa por mês (1=Jan, 12=Dez) e preenche o array (índice 0=Jan)
-    grupo_mes = df_notas.groupby(df_notas['Data'].dt.month)['Valor_Total'].sum()
-    for mes, valor in grupo_mes.items():
-        if 1 <= mes <= 12:
-            vendas_mes[int(mes)-1] = round(valor, 2)
-
-    # --- 3. Top 5 Produtos (Curva A) ---
-    top_prods = df_itens.groupby(['Codigo', 'Descricao'])['Quantidade'].sum().reset_index()
-    top_prods = top_prods.sort_values(by='Quantidade', ascending=False).head(5)
+    # Valor Total do Estoque (procura coluna de valor/preço)
+    valor_total = 0
+    col_valor = next((c for c in df.columns if 'valor' in c.lower() or 'total' in c.lower() or 'custo' in c.lower()), None)
+    if col_valor:
+        valor_total = df[col_valor].sum()
     
-    lista_produtos = []
-    for _, row in top_prods.iterrows():
-        lista_produtos.append({
-            "Codigo": str(row['Codigo']),
-            "Descricao": row['Descricao'],
-            "Quantidade": int(row['Quantidade'])
-        })
+    # Quantidade Total
+    qtd_total = 0
+    col_qtd = next((c for c in df.columns if 'qtd' in c.lower() or 'quant' in c.lower() or 'saldo' in c.lower()), None)
+    if col_qtd:
+        qtd_total = df[col_qtd].sum()
+    else:
+        qtd_total = len(df) # Se não tiver coluna qtd, conta as linhas
 
-    # --- JSON Final ---
-    payload = {
-        "kpis": {
-            "faturamento": round(faturamento, 2),
-            "notas": int(qtd_notas),
-            "pecas": int(qtd_pecas),
-            "ticket": round(ticket_medio, 2)
-        },
-        "graficoMensal": vendas_mes,
-        "topProdutos": lista_produtos
-    }
+    # Data de Atualização
+    data_hoje = datetime.now().strftime("%d/%m/%Y %H:%M")
 
-    print("\n=== COPIE DAQUI PARA BAIXO E COLE NO SEU HTML ===\n")
-    print(f"const dadosReais = {json.dumps(payload, indent=4, ensure_ascii=False)};")
-    print("\n=================================================\n")
+    # 4. Gerar HTML
+    html_content = f"""
+    <!DOCTYPE html>
+    <html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Relatório Fechamento 2025</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            body {{ font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }}
+            .container {{ max-width: 1200px; margin: 0 auto; }}
+            .header {{ background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: white; padding: 30px; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }}
+            .header h1 {{ margin: 0; font-size: 2.5rem; }}
+            .header p {{ opacity: 0.8; margin-top: 5px; }}
+            
+            .kpi-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }}
+            .kpi-card {{ background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 5px solid #3498db; }}
+            .kpi-card h3 {{ margin: 0 0 10px 0; color: #7f8c8d; font-size: 0.9rem; text-transform: uppercase; }}
+            .kpi-card .value {{ font-size: 2rem; font-weight: bold; color: #2c3e50; }}
+            .kpi-card i {{ float: right; font-size: 2.5rem; opacity: 0.2; color: #2c3e50; }}
 
-if __name__ == "__main__":
-    gerar_json_fechamento()
+            .table-container {{ background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); overflow-x: auto; }}
+            table {{ width: 100%; border-collapse: collapse; }}
+            th {{ background-color: #f8f9fa; padding: 15px; text-align: left; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #e9ecef; }}
+            td {{ padding: 12px 15px; border-bottom: 1px solid #e9ecef; color: #495057; }}
+            tr:hover {{ background-color: #f8f9fa; }}
+
+            .btn-back {{ display: inline-block; margin-bottom: 20px; color: #3498db; text-decoration: none; font-weight: bold; }}
+            .btn-back:hover {{ text-decoration: underline; }}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Voltar ao Painel Principal</a>
+            
+            <div class="header">
+                <i class="fas fa-chart-line" style="float: right; font-size: 4rem; opacity: 0.2;"></i>
+                <h1>Fechamento Anual 2025</h1>
+                <p>Relatório gerado em: {data_hoje}</p>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card" style="border-color: #3498db;">
+                    <i class="fas fa-boxes"></i>
+                    <h3>Itens em Estoque</h3>
+                    <div class="value">{qtd_total:,.0f}</div>
+                </div>
+                <div class="kpi-card" style="border-color: #2ecc71;">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <h3>Valor Total Estimado</h3>
+                    <div class="value">R$ {valor_total:,.2f}</div>
+                </div>
+                <div class="kpi-card" style="border-color: #e74c3c;">
+                    <i class="fas fa-file-invoice"></i>
+                    <h3>Total de Linhas</h3>
+                    <div class="value">{len(df)}</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <h3><i class="fas fa-table"></i> Prévia dos Dados (Top 50 itens)</h3>
+                {df.head(50).to_html(index=False, border=0, classes='table')}
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px; color: #95a5a6; font-size: 0.8rem;">
+                Painel gerado automaticamente via Python
+            </div>
+        </div>
+    </body>
+    </html>
+    """
+
+    # 5. Salvar Arquivo
+    with open(ARQUIVO_SAIDA, "w", encoding="utf-8") as f:
+        f.write(html_content)
+
+    print(f"3. SUCESSO! Relatório '{ARQUIVO_SAIDA}' gerado na pasta.")
+
+except Exception as e:
+    print(f"\nERRO AO PROCESSAR O EXCEL: {e}")
+    print("Verifique se você tem as bibliotecas instaladas (pip install pandas openpyxl)")
+
+print("--- FIM DO PROCESSO ---")
