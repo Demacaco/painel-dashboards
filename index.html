@@ -138,30 +138,24 @@
         .card-description { font-size: 0.9rem; color: #8b949e; }
 
         /* --- MÓDULOS EM CONSTRUÇÃO --- */
-        .card-construcao {
-            background: linear-gradient(135deg, #3d0a0a 0%, #1a1a1a 100%) !important;
-            border: 1px solid #5c1818 !important;
-            opacity: 0.85; position: relative;
-        }
-        .card-construcao:hover {
-            background: linear-gradient(135deg, #570e0e 0%, #252525 100%) !important;
-            border-color: #ff4d4d !important;
-            opacity: 1; cursor: not-allowed;
-        }
-        .card-construcao .card-title { color: #ff8080 !important; }
-        .card-construcao::after {
-            content: "🔒 EM BREVE";
-            position: absolute; top: 10px; right: 10px;
-            font-size: 10px; background-color: #2e0505;
-            color: #ff8080; padding: 2px 6px;
-            border-radius: 4px; border: 1px solid #5c1818;
-        }
-        
-        .footer {
-            margin-top: 60px; text-align: center; color: #8b949e;
-            font-size: 0.9rem; padding: 20px; border-top: 1px solid #30363d;
-            width: 100%;
-        }
+        /* --- MÓDULOS EM CONSTRUÇÃO (Atualizado: Sem Borda) --- */
+.card-construcao {
+    /* Fundo escuro avermelhado */
+    background: linear-gradient(135deg, #2b0505 0%, #1a1a1a 100%) !important;
+    /* SEM BORDA, conforme seu pedido */
+    border: none !important;
+    opacity: 0.6; /* Mais transparente para parecer inativo */
+    position: relative;
+    box-shadow: none !important; /* Sem sombra */
+}
+
+.card-construcao:hover {
+    /* Apenas aumenta um pouco a opacidade para leitura */
+    background: linear-gradient(135deg, #400a0a 0%, #202020 100%) !important;
+    opacity: 0.8;
+    cursor: not-allowed;
+    border: none !important; /* Garante que não apareça borda no hover */
+}
 
         /* --- TELA DE LOGIN --- */
         #login-overlay {
@@ -264,6 +258,23 @@
         .btn-content h3 { margin: 0; font-size: 14px; color: #94a3b8; font-weight: 500; text-transform: uppercase; }
         .btn-content span { font-size: 20px; font-weight: 700; color: #fff; }
         .btn-icon { font-size: 24px; color: #10b981; }
+        /* Adicione isso para forçar a remoção de qualquer sublinhado */
+.dashboard-card, 
+/* --- HOVER PADRÃO (Sombra Branca - Efeito Glow) --- */
+/* Aplica apenas nos cards normais (exclui o Inventário e os Em Breve) */
+.dashboard-card:not(.card-construcao):not(.card-destaque):hover {
+    transform: translateY(-5px);
+    /* Borda branca suave combinando com a fonte */
+    border-color: rgba(255, 255, 255, 0.5); 
+    /* Brilho branco enevoado */
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15); 
+}
+
+/* Ajuste fino para o título ficar bem branco no hover */
+.dashboard-card:not(.card-construcao):not(.card-destaque):hover .card-title {
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
     </style>
 
 </head>   
