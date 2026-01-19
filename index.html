@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel Gestão de Estoque</title>
+    <link rel="icon" type="image/jpeg" href="ICONSUZUKI.JPG">
+
+    <meta name="theme-color" content="#0d1117">
+
+    <meta property="og:title" content="Painel de Gestão - Estoque Jundiaí">
+    <meta property="og:description" content="Monitoramento em tempo real: Produtividade, BOs e Inventário.">
+    <meta property="og:image" content="">
     <style>
         /* --- ESTILO GERAL --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -95,9 +99,24 @@
             text-align: center;
         }
         
-        .cards-container {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px; width: 100%;
+        /* --- Substitua o seu .cards-container por este --- */
+.cards-container {
+    display: grid;
+    /* Mudei para 300px e auto-fill (cria colunas vazias em vez de esticar os cards) */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+    /* Isso garante que, se tiver poucos cards, eles fiquem centralizados na tela */
+    justify-content: center;
+}
+
+/* --- E procure o .dashboard-card logo abaixo e adicione o max-width --- */
+.dashboard-card {
+    /* ... mantenha as linhas de background, border, etc que já existem ... */
+    
+    width: 100%;       /* Ocupa o espaço disponível da coluna */
+    max-width: 400px;  /* MAS trava em 400px. Não deixa ficar "gordo" demais */
+}
         }
         
         .dashboard-card {
@@ -169,6 +188,19 @@
         }
         .login-btn:hover { background: #2ea043; }
         #site-conteudo { display: none; }
+        /* --- Classe para Destaque Especial (Inventário) --- */
+.card-destaque {
+    /* Borda na cor Verde-Ciano do Google Sheets */
+    border-color: #00DAC0 !important;
+    /* Brilho suave em volta */
+    box-shadow: 0 0 15px rgba(0, 218, 192, 0.15);
+}
+
+.card-destaque:hover {
+    /* Brilho mais forte quando passa o mouse */
+    box-shadow: 0 0 30px rgba(0, 218, 192, 0.4);
+    transform: translateY(-5px) scale(1.02); /* Leve zoom */
+}
         <style>
     .btn-launcher {
         display: inline-flex;
@@ -295,7 +327,7 @@
                     <div class="card-description">Processo de separação</div>
                 </a>
 
-                <a href="https://script.google.com/macros/s/AKfycbwMgpfdouazqOuQvwB29DArE_ojF7ebcdcoxoOhRRqXxRCh-YWi0C3mfKWOpGtEp0Yk/exec" target="_blank" class="dashboard-card">
+                <a href="https://script.google.com/macros/s/AKfycbwMgpfdouazqOuQvwB29DArE_ojF7ebcdcoxoOhRRqXxRCh-YWi0C3mfKWOpGtEp0Yk/exec" target="_blank" class="dashboard-card card-destaque">
     <div class="card-title" style="color: #00DAC0;">Inventário Cíclico</div>
     <div class="card-description">Monitoramento e Controle (Google Apps)</div>
 </a>
