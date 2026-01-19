@@ -259,22 +259,56 @@
         .btn-content span { font-size: 20px; font-weight: 700; color: #fff; }
         .btn-icon { font-size: 24px; color: #10b981; }
         /* Adicione isso para forçar a remoção de qualquer sublinhado */
-.dashboard-card, 
-/* --- HOVER PADRÃO (Sombra Branca - Efeito Glow) --- */
-/* Aplica apenas nos cards normais (exclui o Inventário e os Em Breve) */
-.dashboard-card:not(.card-construcao):not(.card-destaque):hover {
-    transform: translateY(-5px);
-    /* Borda branca suave combinando com a fonte */
-    border-color: rgba(255, 255, 255, 0.5); 
-    /* Brilho branco enevoado */
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15); 
-}
+/* --- ESTILO DOS CARDS (CORRIGIDO) --- */
+        
+        /* 1. Remove sublinhado de TODOS os links/cards */
+        a { text-decoration: none !important; }
 
-/* Ajuste fino para o título ficar bem branco no hover */
-.dashboard-card:not(.card-construcao):not(.card-destaque):hover .card-title {
-    color: #ffffff;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-}
+        .dashboard-card {
+            /* Devolve a forma do retângulo */
+            background: rgba(22, 27, 34, 0.6); 
+            border: 1px solid #30363d; 
+            border-radius: 12px; /* BORDAS ARREDONDADAS AQUI */
+            
+            padding: 30px 20px; 
+            text-align: center; 
+            color: #c9d1d9; 
+            transition: all 0.3s ease;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 150px; 
+            backdrop-filter: blur(5px);
+            position: relative; overflow: hidden;
+            width: 100%; max-width: 400px; /* Trava o tamanho */
+        }
+
+        /* Tira sublinhado específico do título e descrição */
+        .card-title, .card-description { text-decoration: none !important; }
+
+        .card-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 10px; color: #f0f6fc; }
+        .card-description { font-size: 0.9rem; color: #8b949e; }
+
+        /* --- HOVER DOS ATIVOS (Efeito Glow Branco) --- */
+        .dashboard-card:not(.card-construcao):not(.card-destaque):hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.5); 
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.10); 
+        }
+
+        /* --- MÓDULOS EM CONSTRUÇÃO (Vermelhos Fantasmas) --- */
+        .card-construcao {
+            background: linear-gradient(135deg, #2b0505 0%, #1a1a1a 100%) !important;
+            border: 1px solid transparent !important; /* Sem borda visível */
+            opacity: 0.6; 
+            cursor: not-allowed;
+            border-radius: 12px; /* Mantém arredondado */
+        }
+        .card-construcao:hover { opacity: 0.8; }
+        
+        /* --- DESTAQUE INVENTÁRIO (Verde Neon) --- */
+        .card-destaque {
+            border-color: #00DAC0 !important;
+            box-shadow: 0 0 15px rgba(0, 218, 192, 0.15);
+        }
     </style>
 
 </head>   
@@ -347,10 +381,16 @@
         </div> 
 
         <div class="footer">
-            <p>&copy; 2025 - Desenvolvido por ANDRE REZENDE</p>
+        <p>&copy; 2025 - Desenvolvido por ANDRE REZENDE</p>
+        
+        <div style="margin-top: 15px;">
+            <button onclick="logout()" style="background:none; border:none; color:#58a6ff; cursor:pointer; text-decoration:underline; font-size:0.8rem; opacity:0.7;">
+                🔒 Sair do Sistema
+            </button>
         </div>
-
     </div>
+
+    
 
     <script>
         function verificarSenha() {
