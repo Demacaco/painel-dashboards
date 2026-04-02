@@ -8,7 +8,7 @@
       gtag('js', new Date());
       gtag('config', 'G-M9GZHEE5RL');
     </script>
-    <link rel="icon" type="image/jpeg" href="SUZUKI.JPG">
+    <link rel="icon" type="image/jpeg" href="ICONSUZUKI.JPG">
 
     <meta name="theme-color" content="#00235d"> 
     <meta property="og:title" content="Painel de Gestão - Estoque Jundiaí">
@@ -20,702 +20,186 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- PALETA DE CORES PLATINUM MOTOS --- */
+        /* --- PALETA DE CORES --- */
         :root {
             --azul-marca: #00235d;
             --vermelho-marca: #e30613;
             --texto-escuro: #1a2634;
             --texto-secundario: #4a5568;
-            --borda-card: rgba(0, 0, 0, 0.08);
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', sans-serif;
             color: var(--texto-escuro);
             min-height: 100vh;
-            position: relative;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        /* --- FUNDO ESFUMACADO SUAVE --- */
-        .bg-gradient {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
             background: linear-gradient(145deg, #f5f7fc 0%, #eef2f8 100%);
         }
         
-        .smoke-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
+        /* --- ANIMAÇÃO DE FUNDO --- */
+        .smoke-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+        .smoke { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.2; animation: float 20s infinite; }
+        .smoke-blue { background: radial-gradient(circle, var(--azul-marca), transparent); width: 500px; height: 500px; top: -100px; left: -100px; }
+        .smoke-red { background: radial-gradient(circle, var(--vermelho-marca), transparent); width: 400px; height: 400px; bottom: -100px; right: -100px; }
+        @keyframes float { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(20px, -20px); } }
+
+        .top-bar { position: fixed; top: 0; width: 100%; height: 8px; background: linear-gradient(90deg, var(--azul-marca), var(--vermelho-marca), var(--azul-marca)); z-index: 100; }
+
+        .main-content { position: relative; z-index: 2; width: 100%; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; }
         
-        .smoke {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.35;
-            animation: floatSmoke 20s ease-in-out infinite;
-        }
-        
-        .smoke-blue-1 {
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(0, 35, 93, 0.18) 0%, rgba(0, 35, 93, 0.02) 70%);
-            top: -100px;
-            left: -100px;
-            animation-delay: 0s;
-        }
-        
-        .smoke-blue-2 {
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 35, 93, 0.12) 0%, rgba(0, 35, 93, 0.01) 70%);
-            bottom: -150px;
-            right: -100px;
-            animation-delay: -5s;
-            animation-duration: 25s;
-        }
-        
-        .smoke-blue-3 {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(0, 35, 93, 0.1) 0%, rgba(0, 35, 93, 0.01) 70%);
-            top: 40%;
-            left: 20%;
-            animation-delay: -10s;
-            animation-duration: 18s;
-        }
-        
-        .smoke-red-1 {
-            width: 550px;
-            height: 550px;
-            background: radial-gradient(circle, rgba(227, 6, 19, 0.1) 0%, rgba(227, 6, 19, 0.01) 70%);
-            top: 30%;
-            right: -80px;
-            animation-delay: -3s;
-            animation-duration: 22s;
-        }
-        
-        .smoke-red-2 {
-            width: 450px;
-            height: 450px;
-            background: radial-gradient(circle, rgba(227, 6, 19, 0.08) 0%, rgba(227, 6, 19, 0.01) 70%);
-            bottom: 10%;
-            left: 60%;
-            animation-delay: -8s;
-            animation-duration: 28s;
-        }
-        
-        .smoke-red-3 {
-            width: 380px;
-            height: 380px;
-            background: radial-gradient(circle, rgba(227, 6, 19, 0.07) 0%, rgba(227, 6, 19, 0.01) 70%);
-            top: 65%;
-            left: -50px;
-            animation-delay: -12s;
-            animation-duration: 24s;
-        }
-        
-        .smoke-neutral {
-            width: 700px;
-            height: 700px;
-            background: radial-gradient(circle, rgba(100, 116, 139, 0.06) 0%, rgba(100, 116, 139, 0.01) 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            filter: blur(80px);
-            animation: floatSmoke 30s ease-in-out infinite reverse;
-        }
-        
-        @keyframes floatSmoke {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 0.25;
-            }
-            33% {
-                transform: translate(3%, -2%) scale(1.05);
-                opacity: 0.4;
-            }
-            66% {
-                transform: translate(-2%, 3%) scale(0.98);
-                opacity: 0.3;
-            }
-            100% {
-                transform: translate(0, 0) scale(1);
-                opacity: 0.25;
-            }
-        }
-        
-        /* --- FAIXAS SUPERIOR E INFERIOR (MAIORES) --- */
-        .top-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 8px;
-            background: linear-gradient(90deg, var(--azul-marca) 0%, var(--vermelho-marca) 40%, var(--vermelho-marca) 60%, var(--azul-marca) 100%);
-            z-index: 100;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-        }
-        
-        .bottom-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: linear-gradient(90deg, var(--azul-marca) 0%, var(--vermelho-marca) 50%, var(--azul-marca) 100%);
-            z-index: 100;
-        }
-        
-        /* --- CONTEÚDO PRINCIPAL OCUPA TELA TODA --- */
-        .main-content {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 24px 32px 48px;
-        }
-        
-        /* Header mais integrado */
-        .header { 
-            text-align: center; 
-            margin: 16px 0 24px;
-        }
-        
-        h1 {
-            background: linear-gradient(135deg, var(--azul-marca) 0%, #003a7a 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            font-size: clamp(1.6rem, 5vw, 2.4rem);
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-            font-weight: 800;
-        }
-        
-        .subtitle { 
-            color: var(--texto-secundario); 
-            font-size: clamp(0.85rem, 3vw, 1rem); 
-            font-weight: 500; 
-            max-width: 550px; 
-            margin: 0 auto; 
-            background: rgba(255,255,255,0.6);
-            backdrop-filter: blur(8px);
-            padding: 6px 20px; 
-            border-radius: 40px; 
-            display: inline-block;
-        }
-        
-        /* --- CARROSSEL DE MARCAS (mais integrado) --- */
+        .header { text-align: center; margin-bottom: 20px; }
+        h1 { color: var(--azul-marca); font-size: 2rem; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
+        .subtitle { background: rgba(255,255,255,0.7); padding: 5px 20px; border-radius: 40px; font-size: 0.9rem; color: var(--texto-secundario); }
+
+        /* --- CARROSSEL SLIM --- */
         .marquee-wrapper {
-            width: 100%; 
-            overflow: hidden; 
+            width: 100%;
+            max-width: 1200px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 10px 0;
+            margin: 10px 0 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             white-space: nowrap;
-            padding: 10px 0; 
-            margin: 15px 0 25px;
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(12px);
-            border-radius: 80px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
-            position: relative;
         }
+        .marquee-content { display: inline-block; animation: marquee 30s linear infinite; }
+        .marquee-content img { height: 35px; margin: 0 40px; vertical-align: middle; filter: grayscale(20%); transition: 0.3s; }
+        .marquee-content img:hover { filter: grayscale(0%); transform: scale(1.1); }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        .marquee-wrapper::before, .marquee-wrapper::after {
-            content: ''; 
-            position: absolute; 
-            top: 0; 
-            width: 100px; 
-            height: 100%; 
-            z-index: 2;
-            pointer-events: none;
-        }
-        .marquee-wrapper::before { 
-            left: 0; 
-            background: linear-gradient(to right, rgba(255,255,255,0.85), transparent); 
-            border-radius: 80px 0 0 80px;
-        }
-        .marquee-wrapper::after { 
-            right: 0; 
-            background: linear-gradient(to left, rgba(255,255,255,0.85), transparent); 
-            border-radius: 0 80px 80px 0;
-        }
+        /* --- GRID DE CARDS --- */
+        .section-title { color: var(--azul-marca); font-weight: 700; margin-bottom: 25px; position: relative; padding-bottom: 10px; }
+        .section-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 50px; height: 3px; background: var(--vermelho-marca); }
 
-        .marquee-content {
-            display: inline-block; 
-            animation: marquee 28s linear infinite;
-        }
-        .marquee-content:hover { animation-play-state: paused; }
-
-        .marquee-content img {
-    height: 40px; /* Define uma altura fixa para todas */
-    width: auto;   /* Mantém a proporção da largura */
-    object-fit: contain; 
-    margin: 0 40px; 
-    vertical-align: middle;
-    filter: grayscale(15%) opacity(0.85); 
-    transition: all 0.3s ease;
-}
-        .marquee-content img:hover { 
-            filter: grayscale(0%) opacity(1); 
-            transform: scale(1.08); 
-        }
-
-        @keyframes marquee { 
-            0% { transform: translateX(0); } 
-            100% { transform: translateX(-50%); } 
-        }
-        
-        /* --- CARDS EM GRID RESPONSIVO --- */
         .cards-container {
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 28px; 
-            width: 100%; 
-            max-width: 1400px;
-            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1300px;
         }
-        
-        .section-title {
-            color: var(--azul-marca); 
-            font-size: clamp(1.3rem, 4vw, 1.6rem); 
-            font-weight: 700; 
-            text-align: center; 
-            margin: 20px 0 32px; 
-            letter-spacing: -0.3px;
-            position: relative;
-            display: inline-block;
-            width: auto;
-            margin-left: auto;
-            margin-right: auto;
-            padding-bottom: 12px;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--azul-marca), var(--vermelho-marca));
-            border-radius: 3px;
-        }
-        
-        .text-center {
-            text-align: center;
-        }
-        
-        a { text-decoration: none !important; }
 
         .dashboard-card {
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(203, 213, 225, 0.3);
-            border-radius: 24px;
-            padding: 28px 24px; 
-            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            position: relative; 
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            text-decoration: none;
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
+        .dashboard-card:not(.card-construcao):hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        
+        .card-indicator { width: 40px; height: 4px; border-radius: 2px; margin-bottom: 15px; background: var(--azul-marca); }
+        .destaque-vermelho .card-indicator { background: var(--vermelho-marca); }
+        
+        .card-title { font-weight: 700; color: var(--azul-marca); margin-bottom: 10px; }
+        .destaque-vermelho .card-title { color: var(--vermelho-marca); }
+        
+        .card-description { font-size: 0.85rem; color: var(--texto-secundario); line-height: 1.4; flex-grow: 1; }
+        .card-badge { align-self: flex-start; font-size: 0.7rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; margin-top: 15px; background: #f0f2f5; color: #64748b; }
+        
+        .card-construcao { opacity: 0.7; cursor: not-allowed; border: 1px dashed #cbd5e1; }
 
-        .dashboard-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 24px;
-            background: linear-gradient(135deg, rgba(0,35,93,0.02) 0%, rgba(227,6,19,0.02) 100%);
-            z-index: -1;
-        }
+        /* --- LOGIN --- */
+        #login-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px); z-index: 1000; display: flex; justify-content: center; align-items: center; }
+        .login-box { background: white; padding: 40px; border-radius: 30px; text-align: center; width: 90%; max-width: 380px; border-top: 5px solid var(--vermelho-marca); }
+        .login-input { width: 100%; padding: 12px; margin: 20px 0; border-radius: 30px; border: 1px solid #ddd; text-align: center; font-size: 1rem; }
+        .login-btn { width: 100%; padding: 12px; border-radius: 30px; border: none; background: var(--vermelho-marca); color: white; font-weight: 700; cursor: pointer; }
 
-        .dashboard-card:not(.card-construcao):hover {
-            transform: translateY(-6px);
-            background: rgba(255, 255, 255, 0.96);
-            border-color: rgba(0, 35, 93, 0.2);
-            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.12);
-        }
+        .footer { margin-top: 50px; text-align: center; font-size: 0.8rem; color: var(--texto-secundario); }
+        .logout-btn { margin-top: 10px; background: none; border: none; color: var(--azul-marca); font-weight: 600; cursor: pointer; text-decoration: underline; }
 
-        /* Indicador visual */
-        .card-indicator {
-            width: 45px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--azul-marca), var(--vermelho-marca));
-            border-radius: 3px;
-            margin-bottom: 20px;
-            transition: width 0.3s ease;
-        }
-        
-        .dashboard-card:hover .card-indicator {
-            width: 70px;
-        }
-        
-        .destaque-vermelho .card-indicator {
-            background: linear-gradient(90deg, var(--vermelho-marca), #ff6b6b);
-        }
-        
-        .card-title { 
-            font-size: 1.2rem; 
-            font-weight: 700; 
-            margin-bottom: 12px; 
-            color: var(--azul-marca); 
-            line-height: 1.3;
-        }
-        
-        .card-description { 
-            font-size: 0.88rem; 
-            color: var(--texto-secundario); 
-            line-height: 1.5; 
-            font-weight: 400;
-        }
-
-        .destaque-vermelho .card-title { 
-            color: var(--vermelho-marca); 
-        }
-
-        .card-badge {
-            display: inline-block;
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 30px;
-            margin-top: 18px;
-            background: rgba(0, 35, 93, 0.08);
-            color: var(--azul-marca);
-            letter-spacing: 0.3px;
-        }
-        
-        .destaque-vermelho .card-badge {
-            background: rgba(227, 6, 19, 0.08);
-            color: var(--vermelho-marca);
-        }
-        
-        .card-construcao {
-            background: rgba(248, 250, 252, 0.8) !important;
-            border: 2px dashed rgba(148, 163, 184, 0.5) !important;
-            cursor: not-allowed; 
-        }
-        .card-construcao .card-title { color: #64748b; }
-        .card-construcao .card-description { color: #94a3b8; }
-        .card-construcao .card-indicator {
-            background: #cbd5e1;
-        }
-        .card-construcao .card-badge {
-            background: rgba(100, 116, 139, 0.1);
-            color: #64748b;
-        }
-        .card-construcao:hover {
-            transform: none !important;
-            box-shadow: none !important;
-        }
-        .card-construcao:hover .card-indicator {
-            width: 45px !important;
-        }
-
-        /* --- TELA DE LOGIN --- */
-        #login-overlay {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(16px);
-            z-index: 10000;
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center;
-        }
-        
-        .login-box {
-            background: rgba(255, 255, 255, 0.98);
-            padding: 44px 36px;
-            border-radius: 32px;
-            text-align: center;
-            box-shadow: 0 30px 45px -20px rgba(0, 0, 0, 0.35);
-            max-width: 400px;
-            width: 90%;
-            border-top: 6px solid var(--vermelho-marca);
-        }
-        
-        .login-box h2 {
-            color: var(--azul-marca);
-            margin-bottom: 8px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-        
-        .login-input {
-            width: 100%; 
-            padding: 14px 20px; 
-            margin: 24px 0;
-            background: #f8fafc; 
-            border: 1.5px solid #e2e8f0;
-            border-radius: 60px; 
-            color: var(--texto-escuro); 
-            font-size: 1rem; 
-            text-align: center;
-            font-family: inherit;
-            transition: all 0.2s;
-        }
-        .login-input:focus { 
-            outline: none; 
-            border-color: var(--vermelho-marca); 
-            box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.1); 
-        }
-        
-        .login-btn {
-            background: linear-gradient(135deg, var(--vermelho-marca) 0%, #c40c18 100%);
-            color: white; 
-            border: none;
-            padding: 14px 28px; 
-            border-radius: 60px; 
-            cursor: pointer;
-            font-size: 1rem; 
-            font-weight: 700; 
-            width: 100%; 
-            transition: 0.2s;
-            text-transform: uppercase; 
-            letter-spacing: 0.8px;
-            font-family: inherit;
-        }
-        .login-btn:hover { 
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(227,6,19,0.35);
-        }
-        
-        #site-conteudo { 
-            display: none; 
-        }
-
-        /* --- RODAPÉ MAIS INTEGRADO --- */
-        .footer {
-            width: 100%; 
-            text-align: center; 
-            margin-top: 60px; 
-            padding: 28px 24px;
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(8px);
-            border-radius: 50px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .footer p {
-            color: #5a6874;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        
-        .logout-btn {
-            background: none;
-            border: none;
-            color: var(--azul-marca);
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: 0.2s;
-            padding: 8px 20px;
-            border-radius: 40px;
-            background: rgba(0,35,93,0.05);
-            margin-top: 8px;
-        }
-        
-        .logout-btn:hover {
-            background: rgba(0,35,93,0.12);
-            color: var(--vermelho-marca);
-        }
-        
-        /* --- RESPONSIVIDADE TOTAL --- */
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 16px 20px 32px;
-            }
-            .cards-container {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            .dashboard-card {
-                padding: 22px 20px;
-            }
-            .marquee-wrapper {
-                border-radius: 50px;
-                padding: 12px 0;
-            }
-            .marquee-content img {
-                height: 35px;
-                margin: 0 20px;
-            }
-            .marquee-content img[style*="height: 65px"] {
-                height: 45px !important;
-            }
-            .footer {
-                margin-top: 40px;
-                padding: 20px 16px;
-            }
-            .top-bar {
-                height: 6px;
-            }
-            .bottom-bar {
-                height: 4px;
-            }
-        }
-        
-        @media (min-width: 1400px) {
-            .cards-container {
-                grid-template-columns: repeat(3, 1fr);
-                max-width: 1300px;
-            }
-        }
-        
-        @media (min-width: 1800px) {
-            .cards-container {
-                grid-template-columns: repeat(4, 1fr);
-                max-width: 1600px;
-            }
-        }
-        
-        /* Ajuste para telas muito pequenas */
-        @media (max-width: 480px) {
-            .card-title {
-                font-size: 1rem;
-            }
-            .card-description {
-                font-size: 0.8rem;
-            }
-            .section-title {
-                font-size: 1.2rem;
-            }
-            h1 {
-                font-size: 1.4rem;
-            }
-        }
+        #site-conteudo { display: none; }
     </style>
 </head>
 <body>
-    <div class="bg-gradient"></div>
-    <div class="smoke-bg">
-        <div class="smoke smoke-blue-1"></div>
-        <div class="smoke smoke-blue-2"></div>
-        <div class="smoke smoke-blue-3"></div>
-        <div class="smoke smoke-red-1"></div>
-        <div class="smoke smoke-red-2"></div>
-        <div class="smoke smoke-red-3"></div>
-        <div class="smoke smoke-neutral"></div>
-    </div>
     <div class="top-bar"></div>
-    <div class="bottom-bar"></div>
+    <div class="smoke-bg">
+        <div class="smoke smoke-blue"></div>
+        <div class="smoke smoke-red"></div>
+    </div>
 
     <div id="login-overlay">
         <div class="login-box">
             <h2>🔐 Acesso Restrito</h2>
-            <p style="color: #64748b; font-size: 0.9rem;">Painel de Gestão de Estoque</p>
-            <input type="password" id="passInput" class="login-input" placeholder="Digite a senha">
+            <input type="password" id="passInput" class="login-input" placeholder="Senha do Sistema">
             <button onclick="verificarSenha()" class="login-btn">ENTRAR</button>
-            <p id="msg-erro" style="color: var(--vermelho-marca); margin-top: 16px; display: none; font-size: 0.85rem; font-weight: 600;">Senha incorreta!</p>
+            <p id="msg-erro" style="color:red; display:none; margin-top:10px;">Senha incorreta!</p>
         </div>
     </div>
 
-    <div id="site-conteudo" style="display: none;">
+    <div id="site-conteudo">
         <div class="main-content">
             <div class="header">
-                <h1>Gestão de Estoque de Peças</h1>
-                <p class="subtitle">Sistema integrado de monitoramento e controle operacional</p>
+                <h1>Gestão de Estoque</h1>
+                <p class="subtitle">Monitoramento e Controle Operacional</p>
             </div>
 
             <div class="marquee-wrapper">
                 <div class="marquee-content">
-    <img src="ICONSUZUKI.JPG" alt="Suzuki">
-    <img src="iconZontesJPG.JPG" alt="Zontes" style="height: 65px;">
-    <img src="iconHaojue.JPG" alt="Haojue">
-    <img src="iconHisun.JPG" alt="Hisun">
-    <img src="IconKimco.JPG" alt="Kymco">
-    <img src="ICONSUZUKI.JPG" alt="Suzuki">
-    <img src="iconZontesJPG.JPG" alt="Zontes" style="height: 65px;">
-    <img src="iconHaojue.JPG" alt="Haojue">
-    <img src="iconHisun.JPG" alt="Hisun">
-    <img src="IconKimco.JPG" alt="Kymco">
-</div>
+                    <img src="ICONSUZUKI.JPG" alt="Suzuki">
+                    <img src="iconZontesJPG.JPG" alt="Zontes">
+                    <img src="iconHaojue.JPG" alt="Haojue">
+                    <img src="iconHisun.JPG" alt="Hisun">
+                    <img src="IconKimco.JPG" alt="Kymco">
+                    <img src="ICONSUZUKI.JPG" alt="Suzuki">
+                    <img src="iconZontesJPG.JPG" alt="Zontes">
+                    <img src="iconHaojue.JPG" alt="Haojue">
+                    <img src="iconHisun.JPG" alt="Hisun">
+                    <img src="IconKimco.JPG" alt="Kymco">
                 </div>
             </div>
 
-            <div class="text-center">
-                <h2 class="section-title">Módulos do Sistema</h2>
-            </div>
+            <h2 class="section-title">Módulos do Sistema</h2>
             
             <div class="cards-container">
                 <a href="#" class="dashboard-card card-construcao">
                     <div class="card-indicator"></div>
-                    <div class="card-title">Gestão de KPIs Operacionais</div>
-                    <div class="card-description">Monitoramento de eficiência, capacidade e tempo de resposta da equipe.</div>
+                    <div class="card-title">KPIs Operacionais</div>
+                    <div class="card-description">Eficiência e tempo de resposta da equipe.</div>
                     <div class="card-badge">Em desenvolvimento</div>
                 </a>
 
                 <a href="https://script.google.com/macros/s/AKfycbxqXYJQ0L8e9Iw0GGSr8W_VRBtO_JD0hExUFYzTahXBpMrxRVhjwCbI7nxQ8t22AjFJJg/exec" target="_blank" class="dashboard-card destaque-vermelho">
                     <div class="card-indicator"></div>
                     <div class="card-title">Backorder & Ressuprimento</div>
-                    <div class="card-description">Mapeamento de pedidos pendentes vs. lead time e cobertura de estoque.</div>
-                    <div class="card-badge">Ativo</div>
+                    <div class="card-description">Pedidos pendentes vs. cobertura de estoque.</div>
+                    <div class="card-badge" style="color: #e30613; background: rgba(227,6,19,0.1);">Ativo</div>
                 </a>
 
                 <a href="https://script.google.com/macros/s/AKfycbwj_QMM-fmmtf0WJ8r4XmbLd2gg3P4zjXtYZKo1nQiBhs3J-2irZDZpfIl3pIllso2HvA/exec" target="_blank" class="dashboard-card">
                     <div class="card-indicator"></div>
-                    <div class="card-title">Logística Reversa & Forecasting</div>
-                    <div class="card-description">Análise de garantias e prevenção de rupturas de peças.</div>
-                    <div class="card-badge">Ativo</div>
+                    <div class="card-title">Logística Reversa</div>
+                    <div class="card-description">Análise de garantias e prevenção de rupturas.</div>
+                    <div class="card-badge" style="color: var(--azul-marca); background: rgba(0,35,93,0.1);">Ativo</div>
                 </a>
 
                 <a href="https://demacaco.github.io/Dashboard-retrabalho/" target="_blank" class="dashboard-card">
                     <div class="card-indicator"></div>
-                    <div class="card-title">Controle de Qualidade Operacional</div>
-                    <div class="card-description">Rastreamento de desvios logísticos e avarias para melhoria contínua.</div>
-                    <div class="card-badge">Ativo</div>
+                    <div class="card-title">Controle de Qualidade</div>
+                    <div class="card-description">Rastreamento de desvios e avarias.</div>
+                    <div class="card-badge" style="color: var(--azul-marca); background: rgba(0,35,93,0.1);">Ativo</div>
                 </a>
 
                 <a href="https://demacaco.github.io/dashboard-guarda/" target="_blank" class="dashboard-card">
                     <div class="card-indicator"></div>
-                    <div class="card-title">Gestão de Inbound & Docas</div>
-                    <div class="card-description">Controle do fluxo de entrada e SLA de recebimento de materiais.</div>
-                    <div class="card-badge">Ativo</div>
-                </a>
-
-                <a href="#" class="dashboard-card card-construcao">
-                    <div class="card-indicator"></div>
-                    <div class="card-title">Picking & Packing (Expedição)</div>
-                    <div class="card-description">Otimização do fluxo de separação, embalagem e saída de pedidos.</div>
-                    <div class="card-badge">Em desenvolvimento</div>
+                    <div class="card-title">Inbound & Docas</div>
+                    <div class="card-description">Controle do fluxo de entrada e SLA de recebimento.</div>
+                    <div class="card-badge" style="color: var(--azul-marca); background: rgba(0,35,93,0.1);">Ativo</div>
                 </a>
 
                 <a href="https://script.google.com/macros/s/AKfycbwMgpfdouazqOuQvwB29DArE_ojF7ebcdcoxoOhRRqXxRCh-YWi0C3mfKWOpGtEp0Yk/exec" target="_blank" class="dashboard-card destaque-vermelho">
                     <div class="card-indicator"></div>
-                    <div class="card-title">Acuracidade & Inventário</div>
-                    <div class="card-description">Alinhamento de precisão entre o saldo físico das peças e o sistêmico.</div>
-                    <div class="card-badge">Ativo</div>
+                    <div class="card-title">Acuracidade</div>
+                    <div class="card-description">Alinhamento entre saldo físico e sistêmico.</div>
+                    <div class="card-badge" style="color: #e30613; background: rgba(227,6,19,0.1);">Ativo</div>
                 </a>
             </div>
 
@@ -728,17 +212,13 @@
 
     <script>
         function verificarSenha() {
-            var input = document.getElementById("passInput").value;
-            var senhaCorreta = "suzuki26"; 
-
-            if (input.toLowerCase().trim() === senhaCorreta.toLowerCase()) {
+            const input = document.getElementById("passInput").value;
+            if (input.toLowerCase().trim() === "suzuki26") {
                 document.getElementById("login-overlay").style.display = "none";
                 document.getElementById("site-conteudo").style.display = "block";
                 sessionStorage.setItem("auth", "ok");
             } else {
                 document.getElementById("msg-erro").style.display = "block";
-                document.getElementById("passInput").value = "";
-                document.getElementById("passInput").focus();
             }
         }
 
@@ -747,16 +227,13 @@
             document.getElementById("site-conteudo").style.display = "block";
         }
 
-        document.getElementById("passInput").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") verificarSenha();
+        document.getElementById("passInput").addEventListener("keypress", (e) => {
+            if (e.key === "Enter") verificarSenha();
         });
 
         function logout() {
             sessionStorage.removeItem("auth");
-            document.getElementById("site-conteudo").style.display = "none";
-            document.getElementById("login-overlay").style.display = "flex";
-            document.getElementById("passInput").value = "";
-            document.getElementById("msg-erro").style.display = "none";
+            location.reload();
         }
     </script>
 </body>
