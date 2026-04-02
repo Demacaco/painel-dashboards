@@ -267,13 +267,14 @@
         .marquee-content:hover { animation-play-state: paused; }
 
         .marquee-content img {
-            height: 45px; 
-            object-fit: contain; 
-            margin: 0 35px; 
-            vertical-align: middle;
-            filter: grayscale(15%) opacity(0.85); 
-            transition: all 0.3s ease;
-        }
+    height: 40px; /* Define uma altura fixa para todas */
+    width: auto;   /* Mantém a proporção da largura */
+    object-fit: contain; 
+    margin: 0 40px; 
+    vertical-align: middle;
+    filter: grayscale(15%) opacity(0.85); 
+    transition: all 0.3s ease;
+}
         .marquee-content img:hover { 
             filter: grayscale(0%) opacity(1); 
             transform: scale(1.08); 
